@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.LandQualityMapper">
+    
+    <resultMap type="LandQuality" id="LandQualityResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="area"    column="area"    />
+        <result property="result"    column="result"    />
+        <result property="rateTime"    column="rate_time"    />
+        <result property="rateUnit"    column="rate_unit"    />
+        <result property="operator"    column="operator"    />
+        <result property="operatingTime"    column="operating_time"    />
+        <result property="landPosition"    column="land_position"    />
+        <result property="soilThickness"    column="soil_thickness"    />
+        <result property="texture"    column="texture"    />
+        <result property="soilWeight"    column="soil_weight"    />
+        <result property="soilStructure"    column="soil_structure"    />
+        <result property="nutrientStatus"    column="nutrient_status"    />
+        <result property="biodiversity"    column="biodiversity"    />
+        <result property="cleanliness"    column="cleanliness"    />
+        <result property="hinder"    column="hinder"    />
+        <result property="irrigation"    column="irrigation"    />
+        <result property="drainWater"    column="drain_water"    />
+        <result property="forestNetwork"    column="forest_network"    />
+        <result property="pH"    column="pH"    />
+        <result property="surfaceThickness"    column="surface_thickness"    />
+        <result property="salinization"    column="salinization"    />
+        <result property="groundwaterDepth"    column="groundwater_depth"    />
+        <result property="slope"    column="slope"    />
+        <result property="height"    column="height"    />
+    </resultMap>
+
+    <sql id="selectLandQualityVo">
+        select id, name, area, result, rate_time, rate_unit, operator, operating_time, land_position, soil_thickness, texture, soil_weight, soil_structure, nutrient_status, biodiversity, cleanliness, hinder, irrigation, drain_water, forest_network, pH, surface_thickness, salinization, groundwater_depth, slope, height from landquality
+    </sql>
+
+    <select id="selectLandQualityList" parameterType="LandQuality" resultMap="LandQualityResult">
+        <include refid="selectLandQualityVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="area != null  and area != ''"> and area = #{area}</if>
+            <if test="result != null  and result != ''"> and result = #{result}</if>
+            <if test="rateTime != null "> and rate_time = #{rateTime}</if>
+            <if test="rateUnit != null  and rateUnit != ''"> and rate_unit = #{rateUnit}</if>
+            <if test="operator != null  and operator != ''"> and operator = #{operator}</if>
+            <if test="operatingTime != null "> and operating_time = #{operatingTime}</if>
+            <if test="landPosition != null  and landPosition != ''"> and land_position = #{landPosition}</if>
+            <if test="soilThickness != null "> and soil_thickness = #{soilThickness}</if>
+            <if test="texture != null  and texture != ''"> and texture = #{texture}</if>
+            <if test="soilWeight != null  and soilWeight != ''"> and soil_weight = #{soilWeight}</if>
+            <if test="soilStructure != null  and soilStructure != ''"> and soil_structure = #{soilStructure}</if>
+            <if test="nutrientStatus != null  and nutrientStatus != ''"> and nutrient_status = #{nutrientStatus}</if>
+            <if test="biodiversity != null  and biodiversity != ''"> and biodiversity = #{biodiversity}</if>
+            <if test="cleanliness != null  and cleanliness != ''"> and cleanliness = #{cleanliness}</if>
+            <if test="hinder != null  and hinder != ''"> and hinder = #{hinder}</if>
+            <if test="irrigation != null  and irrigation != ''"> and irrigation = #{irrigation}</if>
+            <if test="drainWater != null  and drainWater != ''"> and drain_water = #{drainWater}</if>
+            <if test="forestNetwork != null  and forestNetwork != ''"> and forest_network = #{forestNetwork}</if>
+            <if test="pH != null "> and pH = #{pH}</if>
+            <if test="surfaceThickness != null "> and surface_thickness = #{surfaceThickness}</if>
+            <if test="salinization != null  and salinization != ''"> and salinization = #{salinization}</if>
+            <if test="groundwaterDepth != null "> and groundwater_depth = #{groundwaterDepth}</if>
+            <if test="slope != null  and slope != ''"> and slope = #{slope}</if>
+            <if test="height != null "> and height = #{height}</if>
+        </where>
+    </select>
+    
+    <select id="selectLandQualityById" parameterType="Long" resultMap="LandQualityResult">
+        <include refid="selectLandQualityVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertLandQuality" parameterType="LandQuality" useGeneratedKeys="true" keyProperty="id">
+        insert into landquality
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="area != null">area,</if>
+            <if test="result != null">result,</if>
+            <if test="rateTime != null">rate_time,</if>
+            <if test="rateUnit != null">rate_unit,</if>
+            <if test="operator != null">operator,</if>
+            <if test="operatingTime != null">operating_time,</if>
+            <if test="landPosition != null">land_position,</if>
+            <if test="soilThickness != null">soil_thickness,</if>
+            <if test="texture != null">texture,</if>
+            <if test="soilWeight != null">soil_weight,</if>
+            <if test="soilStructure != null">soil_structure,</if>
+            <if test="nutrientStatus != null">nutrient_status,</if>
+            <if test="biodiversity != null">biodiversity,</if>
+            <if test="cleanliness != null">cleanliness,</if>
+            <if test="hinder != null">hinder,</if>
+            <if test="irrigation != null">irrigation,</if>
+            <if test="drainWater != null">drain_water,</if>
+            <if test="forestNetwork != null">forest_network,</if>
+            <if test="pH != null">pH,</if>
+            <if test="surfaceThickness != null">surface_thickness,</if>
+            <if test="salinization != null">salinization,</if>
+            <if test="groundwaterDepth != null">groundwater_depth,</if>
+            <if test="slope != null">slope,</if>
+            <if test="height != null">height,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="area != null">#{area},</if>
+            <if test="result != null">#{result},</if>
+            <if test="rateTime != null">#{rateTime},</if>
+            <if test="rateUnit != null">#{rateUnit},</if>
+            <if test="operator != null">#{operator},</if>
+            <if test="operatingTime != null">#{operatingTime},</if>
+            <if test="landPosition != null">#{landPosition},</if>
+            <if test="soilThickness != null">#{soilThickness},</if>
+            <if test="texture != null">#{texture},</if>
+            <if test="soilWeight != null">#{soilWeight},</if>
+            <if test="soilStructure != null">#{soilStructure},</if>
+            <if test="nutrientStatus != null">#{nutrientStatus},</if>
+            <if test="biodiversity != null">#{biodiversity},</if>
+            <if test="cleanliness != null">#{cleanliness},</if>
+            <if test="hinder != null">#{hinder},</if>
+            <if test="irrigation != null">#{irrigation},</if>
+            <if test="drainWater != null">#{drainWater},</if>
+            <if test="forestNetwork != null">#{forestNetwork},</if>
+            <if test="pH != null">#{pH},</if>
+            <if test="surfaceThickness != null">#{surfaceThickness},</if>
+            <if test="salinization != null">#{salinization},</if>
+            <if test="groundwaterDepth != null">#{groundwaterDepth},</if>
+            <if test="slope != null">#{slope},</if>
+            <if test="height != null">#{height},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLandQuality" parameterType="LandQuality">
+        update landquality
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="area != null">area = #{area},</if>
+            <if test="result != null">result = #{result},</if>
+            <if test="rateTime != null">rate_time = #{rateTime},</if>
+            <if test="rateUnit != null">rate_unit = #{rateUnit},</if>
+            <if test="operator != null">operator = #{operator},</if>
+            <if test="operatingTime != null">operating_time = #{operatingTime},</if>
+            <if test="landPosition != null">land_position = #{landPosition},</if>
+            <if test="soilThickness != null">soil_thickness = #{soilThickness},</if>
+            <if test="texture != null">texture = #{texture},</if>
+            <if test="soilWeight != null">soil_weight = #{soilWeight},</if>
+            <if test="soilStructure != null">soil_structure = #{soilStructure},</if>
+            <if test="nutrientStatus != null">nutrient_status = #{nutrientStatus},</if>
+            <if test="biodiversity != null">biodiversity = #{biodiversity},</if>
+            <if test="cleanliness != null">cleanliness = #{cleanliness},</if>
+            <if test="hinder != null">hinder = #{hinder},</if>
+            <if test="irrigation != null">irrigation = #{irrigation},</if>
+            <if test="drainWater != null">drain_water = #{drainWater},</if>
+            <if test="forestNetwork != null">forest_network = #{forestNetwork},</if>
+            <if test="pH != null">pH = #{pH},</if>
+            <if test="surfaceThickness != null">surface_thickness = #{surfaceThickness},</if>
+            <if test="salinization != null">salinization = #{salinization},</if>
+            <if test="groundwaterDepth != null">groundwater_depth = #{groundwaterDepth},</if>
+            <if test="slope != null">slope = #{slope},</if>
+            <if test="height != null">height = #{height},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLandQualityById" parameterType="Long">
+        delete from landquality where id = #{id}
+    </delete>
+
+    <delete id="deleteLandQualityByIds" parameterType="String">
+        delete from landquality where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

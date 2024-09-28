@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.RzMapper">
+    
+    <resultMap type="Rz" id="RzResult">
+        <result property="id"    column="id"    />
+        <result property="time"    column="time"    />
+        <result property="tempo"    column="tempo"    />
+        <result property="hum"    column="hum"    />
+        <result property="tr"    column="tr"    />
+        <result property="lx"    column="lx"    />
+        <result property="eyht"    column="eyht"    />
+    </resultMap>
+
+    <sql id="selectRzVo">
+        select id, time, tempo, hum, tr, lx, eyht from rz
+    </sql>
+
+    <select id="selectRzList" parameterType="Rz" resultMap="RzResult">
+        <include refid="selectRzVo"/>
+        <where>  
+            <if test="time != null "> and time = #{time}</if>
+            <if test="tempo != null "> and tempo = #{tempo}</if>
+            <if test="hum != null "> and hum = #{hum}</if>
+            <if test="tr != null "> and tr = #{tr}</if>
+            <if test="lx != null "> and lx = #{lx}</if>
+            <if test="eyht != null "> and eyht = #{eyht}</if>
+        </where>
+    </select>
+    
+    <select id="selectRzById" parameterType="Long" resultMap="RzResult">
+        <include refid="selectRzVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertRz" parameterType="Rz" useGeneratedKeys="true" keyProperty="id">
+        insert into rz
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="time != null">time,</if>
+            <if test="tempo != null">tempo,</if>
+            <if test="hum != null">hum,</if>
+            <if test="tr != null">tr,</if>
+            <if test="lx != null">lx,</if>
+            <if test="eyht != null">eyht,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="time != null">#{time},</if>
+            <if test="tempo != null">#{tempo},</if>
+            <if test="hum != null">#{hum},</if>
+            <if test="tr != null">#{tr},</if>
+            <if test="lx != null">#{lx},</if>
+            <if test="eyht != null">#{eyht},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRz" parameterType="Rz">
+        update rz
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="time != null">time = #{time},</if>
+            <if test="tempo != null">tempo = #{tempo},</if>
+            <if test="hum != null">hum = #{hum},</if>
+            <if test="tr != null">tr = #{tr},</if>
+            <if test="lx != null">lx = #{lx},</if>
+            <if test="eyht != null">eyht = #{eyht},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRzById" parameterType="Long">
+        delete from rz where id = #{id}
+    </delete>
+
+    <delete id="deleteRzByIds" parameterType="String">
+        delete from rz where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
