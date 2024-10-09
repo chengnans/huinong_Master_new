@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.RemotePhotosMapper">
+    
+    <resultMap type="RemotePhotos" id="RemotePhotosResult">
+        <result property="id"    column="id"    />
+        <result property="imageType"    column="image_type"    />
+        <result property="imageName"    column="image_name"    />
+        <result property="imageAddress"    column="image_address"    />
+        <result property="area"    column="area"    />
+        <result property="deviceName"    column="device_name"    />
+        <result property="effect"    column="effect"    />
+        <result property="baseland"    column="baseland"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="resource"    column="resource"    />
+    </resultMap>
+
+    <sql id="selectRemotePhotosVo">
+        select id, image_type, image_name, image_address, area, device_name, effect, baseland, create_time, resource from remote_photos
+    </sql>
+
+    <select id="selectRemotePhotosList" parameterType="RemotePhotos" resultMap="RemotePhotosResult">
+        <include refid="selectRemotePhotosVo"/>
+        <where>  
+            <if test="imageType != null "> and image_type = #{imageType}</if>
+            <if test="imageName != null  and imageName != ''"> and image_name like concat('%', #{imageName}, '%')</if>
+            <if test="imageAddress != null  and imageAddress != ''"> and image_address = #{imageAddress}</if>
+            <if test="area != null  and area != ''"> and area = #{area}</if>
+            <if test="deviceName != null  and deviceName != ''"> and device_name like concat('%', #{deviceName}, '%')</if>
+            <if test="effect != null  and effect != ''"> and effect = #{effect}</if>
+            <if test="baseland != null  and baseland != ''"> and baseland = #{baseland}</if>
+            <if test="resource != null  and resource != ''"> and resource = #{resource}</if>
+        </where>
+    </select>
+    
+    <select id="selectRemotePhotosById" parameterType="Long" resultMap="RemotePhotosResult">
+        <include refid="selectRemotePhotosVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertRemotePhotos" parameterType="RemotePhotos" useGeneratedKeys="true" keyProperty="id">
+        insert into remote_photos
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="imageType != null">image_type,</if>
+            <if test="imageName != null">image_name,</if>
+            <if test="imageAddress != null">image_address,</if>
+            <if test="area != null">area,</if>
+            <if test="deviceName != null">device_name,</if>
+            <if test="effect != null">effect,</if>
+            <if test="baseland != null">baseland,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="resource != null">resource,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="imageType != null">#{imageType},</if>
+            <if test="imageName != null">#{imageName},</if>
+            <if test="imageAddress != null">#{imageAddress},</if>
+            <if test="area != null">#{area},</if>
+            <if test="deviceName != null">#{deviceName},</if>
+            <if test="effect != null">#{effect},</if>
+            <if test="baseland != null">#{baseland},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="resource != null">#{resource},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRemotePhotos" parameterType="RemotePhotos">
+        update remote_photos
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="imageType != null">image_type = #{imageType},</if>
+            <if test="imageName != null">image_name = #{imageName},</if>
+            <if test="imageAddress != null">image_address = #{imageAddress},</if>
+            <if test="area != null">area = #{area},</if>
+            <if test="deviceName != null">device_name = #{deviceName},</if>
+            <if test="effect != null">effect = #{effect},</if>
+            <if test="baseland != null">baseland = #{baseland},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="resource != null">resource = #{resource},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRemotePhotosById" parameterType="Long">
+        delete from remote_photos where id = #{id}
+    </delete>
+
+    <delete id="deleteRemotePhotosByIds" parameterType="String">
+        delete from remote_photos where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

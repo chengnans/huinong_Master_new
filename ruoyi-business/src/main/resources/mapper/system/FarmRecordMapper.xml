@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.FarmRecordMapper">
+    
+    <resultMap type="FarmRecord" id="FarmRecordResult">
+        <result property="id"    column="id"    />
+        <result property="baselandName"    column="baseland_name"    />
+        <result property="gropName"    column="grop_name"    />
+        <result property="growCycle"    column="grow_cycle"    />
+        <result property="farmOperation"    column="farm_operation"    />
+        <result property="farmRequirement"    column="farm_requirement"    />
+        <result property="operationTime"    column="operation_time"    />
+        <result property="workingHours"    column="working_hours"    />
+        <result property="photos"    column="photos"    />
+        <result property="input"    column="input"    />
+        <result property="inputQuantity"    column="input_quantity"    />
+        <result property="detail"    column="detail"    />
+    </resultMap>
+
+    <sql id="selectFarmRecordVo">
+        select id, baseland_name, grop_name, grow_cycle, farm_operation, farm_requirement, operation_time, working_hours, photos, input, input_quantity, detail from farm_record
+    </sql>
+
+    <select id="selectFarmRecordList" parameterType="FarmRecord" resultMap="FarmRecordResult">
+        <include refid="selectFarmRecordVo"/>
+        <where>  
+            <if test="baselandName != null  and baselandName != ''"> and baseland_name like concat('%', #{baselandName}, '%')</if>
+            <if test="gropName != null  and gropName != ''"> and grop_name like concat('%', #{gropName}, '%')</if>
+            <if test="growCycle != null "> and grow_cycle = #{growCycle}</if>
+            <if test="farmOperation != null  and farmOperation != ''"> and farm_operation = #{farmOperation}</if>
+            <if test="farmRequirement != null "> and farm_requirement = #{farmRequirement}</if>
+            <if test="operationTime != null "> and operation_time = #{operationTime}</if>
+            <if test="workingHours != null  and workingHours != ''"> and working_hours = #{workingHours}</if>
+            <if test="photos != null  and photos != ''"> and photos = #{photos}</if>
+            <if test="input != null  and input != ''"> and input = #{input}</if>
+            <if test="inputQuantity != null  and inputQuantity != ''"> and input_quantity = #{inputQuantity}</if>
+            <if test="detail != null  and detail != ''"> and detail = #{detail}</if>
+        </where>
+    </select>
+    
+    <select id="selectFarmRecordById" parameterType="Long" resultMap="FarmRecordResult">
+        <include refid="selectFarmRecordVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertFarmRecord" parameterType="FarmRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into farm_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="baselandName != null">baseland_name,</if>
+            <if test="gropName != null">grop_name,</if>
+            <if test="growCycle != null">grow_cycle,</if>
+            <if test="farmOperation != null">farm_operation,</if>
+            <if test="farmRequirement != null">farm_requirement,</if>
+            <if test="operationTime != null">operation_time,</if>
+            <if test="workingHours != null">working_hours,</if>
+            <if test="photos != null">photos,</if>
+            <if test="input != null">input,</if>
+            <if test="inputQuantity != null">input_quantity,</if>
+            <if test="detail != null">detail,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="baselandName != null">#{baselandName},</if>
+            <if test="gropName != null">#{gropName},</if>
+            <if test="growCycle != null">#{growCycle},</if>
+            <if test="farmOperation != null">#{farmOperation},</if>
+            <if test="farmRequirement != null">#{farmRequirement},</if>
+            <if test="operationTime != null">#{operationTime},</if>
+            <if test="workingHours != null">#{workingHours},</if>
+            <if test="photos != null">#{photos},</if>
+            <if test="input != null">#{input},</if>
+            <if test="inputQuantity != null">#{inputQuantity},</if>
+            <if test="detail != null">#{detail},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFarmRecord" parameterType="FarmRecord">
+        update farm_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="baselandName != null">baseland_name = #{baselandName},</if>
+            <if test="gropName != null">grop_name = #{gropName},</if>
+            <if test="growCycle != null">grow_cycle = #{growCycle},</if>
+            <if test="farmOperation != null">farm_operation = #{farmOperation},</if>
+            <if test="farmRequirement != null">farm_requirement = #{farmRequirement},</if>
+            <if test="operationTime != null">operation_time = #{operationTime},</if>
+            <if test="workingHours != null">working_hours = #{workingHours},</if>
+            <if test="photos != null">photos = #{photos},</if>
+            <if test="input != null">input = #{input},</if>
+            <if test="inputQuantity != null">input_quantity = #{inputQuantity},</if>
+            <if test="detail != null">detail = #{detail},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFarmRecordById" parameterType="Long">
+        delete from farm_record where id = #{id}
+    </delete>
+
+    <delete id="deleteFarmRecordByIds" parameterType="String">
+        delete from farm_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

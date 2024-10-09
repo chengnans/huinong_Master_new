@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.FarmPlanMapper">
+    
+    <resultMap type="FarmPlan" id="FarmPlanResult">
+        <result property="id"    column="id"    />
+        <result property="baselandName"    column="baseland_name"    />
+        <result property="cropName"    column="crop_name"    />
+        <result property="growCycle"    column="grow_cycle"    />
+        <result property="farmOperation"    column="farm_operation"    />
+        <result property="farmRequire"    column="farm_require"    />
+        <result property="beginTime"    column="begin_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="operateTime"    column="operate_time"    />
+        <result property="photos"    column="photos"    />
+        <result property="videos"    column="videos"    />
+        <result property="input"    column="input"    />
+        <result property="inputQuantity"    column="input_quantity"    />
+        <result property="description"    column="description"    />
+        <result property="operator"    column="operator"    />
+    </resultMap>
+
+    <sql id="selectFarmPlanVo">
+        select id, baseland_name, crop_name, grow_cycle, farm_operation, farm_require, begin_time, end_time, operate_time, photos, videos, input, input_quantity, description, operator from farm_plan
+    </sql>
+
+    <select id="selectFarmPlanList" parameterType="FarmPlan" resultMap="FarmPlanResult">
+        <include refid="selectFarmPlanVo"/>
+        <where>  
+            <if test="baselandName != null  and baselandName != ''"> and baseland_name like concat('%', #{baselandName}, '%')</if>
+            <if test="cropName != null  and cropName != ''"> and crop_name like concat('%', #{cropName}, '%')</if>
+            <if test="growCycle != null  and growCycle != ''"> and grow_cycle = #{growCycle}</if>
+            <if test="farmOperation != null  and farmOperation != ''"> and farm_operation = #{farmOperation}</if>
+            <if test="farmRequire != null  and farmRequire != ''"> and farm_require = #{farmRequire}</if>
+            <if test="beginTime != null "> and begin_time = #{beginTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="operateTime != null  and operateTime != ''"> and operate_time = #{operateTime}</if>
+            <if test="photos != null  and photos != ''"> and photos = #{photos}</if>
+            <if test="videos != null  and videos != ''"> and videos = #{videos}</if>
+            <if test="input != null  and input != ''"> and input = #{input}</if>
+            <if test="inputQuantity != null  and inputQuantity != ''"> and input_quantity = #{inputQuantity}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="operator != null  and operator != ''"> and operator = #{operator}</if>
+        </where>
+    </select>
+    
+    <select id="selectFarmPlanById" parameterType="Long" resultMap="FarmPlanResult">
+        <include refid="selectFarmPlanVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertFarmPlan" parameterType="FarmPlan" useGeneratedKeys="true" keyProperty="id">
+        insert into farm_plan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="baselandName != null">baseland_name,</if>
+            <if test="cropName != null">crop_name,</if>
+            <if test="growCycle != null">grow_cycle,</if>
+            <if test="farmOperation != null">farm_operation,</if>
+            <if test="farmRequire != null">farm_require,</if>
+            <if test="beginTime != null">begin_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="operateTime != null">operate_time,</if>
+            <if test="photos != null">photos,</if>
+            <if test="videos != null">videos,</if>
+            <if test="input != null">input,</if>
+            <if test="inputQuantity != null">input_quantity,</if>
+            <if test="description != null">description,</if>
+            <if test="operator != null">operator,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="baselandName != null">#{baselandName},</if>
+            <if test="cropName != null">#{cropName},</if>
+            <if test="growCycle != null">#{growCycle},</if>
+            <if test="farmOperation != null">#{farmOperation},</if>
+            <if test="farmRequire != null">#{farmRequire},</if>
+            <if test="beginTime != null">#{beginTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="operateTime != null">#{operateTime},</if>
+            <if test="photos != null">#{photos},</if>
+            <if test="videos != null">#{videos},</if>
+            <if test="input != null">#{input},</if>
+            <if test="inputQuantity != null">#{inputQuantity},</if>
+            <if test="description != null">#{description},</if>
+            <if test="operator != null">#{operator},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFarmPlan" parameterType="FarmPlan">
+        update farm_plan
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="baselandName != null">baseland_name = #{baselandName},</if>
+            <if test="cropName != null">crop_name = #{cropName},</if>
+            <if test="growCycle != null">grow_cycle = #{growCycle},</if>
+            <if test="farmOperation != null">farm_operation = #{farmOperation},</if>
+            <if test="farmRequire != null">farm_require = #{farmRequire},</if>
+            <if test="beginTime != null">begin_time = #{beginTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="operateTime != null">operate_time = #{operateTime},</if>
+            <if test="photos != null">photos = #{photos},</if>
+            <if test="videos != null">videos = #{videos},</if>
+            <if test="input != null">input = #{input},</if>
+            <if test="inputQuantity != null">input_quantity = #{inputQuantity},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="operator != null">operator = #{operator},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFarmPlanById" parameterType="Long">
+        delete from farm_plan where id = #{id}
+    </delete>
+
+    <delete id="deleteFarmPlanByIds" parameterType="String">
+        delete from farm_plan where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

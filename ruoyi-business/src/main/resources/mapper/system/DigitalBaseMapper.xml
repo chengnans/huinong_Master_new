@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.DigitalBaseMapper">
+    
+    <resultMap type="DigitalBase" id="DigitalBaseResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="shortName"    column="short_name"    />
+        <result property="area"    column="area"    />
+        <result property="classify"    column="classify"    />
+        <result property="type"    column="type"    />
+        <result property="institution"    column="institution"    />
+        <result property="city"    column="city"    />
+        <result property="town"    column="town"    />
+        <result property="village"    column="village"    />
+        <result property="time"    column="time"    />
+        <result property="contacts"    column="contacts"    />
+        <result property="phone"    column="phone"    />
+    </resultMap>
+
+    <sql id="selectDigitalBaseVo">
+        select id, name, short_name, area, classify, type, institution, city, town, village, time, contacts, phone from digital_base
+    </sql>
+
+    <select id="selectDigitalBaseList" parameterType="DigitalBase" resultMap="DigitalBaseResult">
+        <include refid="selectDigitalBaseVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="shortName != null  and shortName != ''"> and short_name like concat('%', #{shortName}, '%')</if>
+            <if test="area != null "> and area = #{area}</if>
+            <if test="classify != null  and classify != ''"> and classify = #{classify}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="institution != null  and institution != ''"> and institution = #{institution}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="town != null  and town != ''"> and town = #{town}</if>
+            <if test="village != null  and village != ''"> and village = #{village}</if>
+            <if test="time != null "> and time = #{time}</if>
+            <if test="contacts != null  and contacts != ''"> and contacts = #{contacts}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+        </where>
+    </select>
+    
+    <select id="selectDigitalBaseById" parameterType="Long" resultMap="DigitalBaseResult">
+        <include refid="selectDigitalBaseVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertDigitalBase" parameterType="DigitalBase" useGeneratedKeys="true" keyProperty="id">
+        insert into digital_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="shortName != null">short_name,</if>
+            <if test="area != null">area,</if>
+            <if test="classify != null">classify,</if>
+            <if test="type != null">type,</if>
+            <if test="institution != null">institution,</if>
+            <if test="city != null">city,</if>
+            <if test="town != null">town,</if>
+            <if test="village != null">village,</if>
+            <if test="time != null">time,</if>
+            <if test="contacts != null">contacts,</if>
+            <if test="phone != null">phone,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="shortName != null">#{shortName},</if>
+            <if test="area != null">#{area},</if>
+            <if test="classify != null">#{classify},</if>
+            <if test="type != null">#{type},</if>
+            <if test="institution != null">#{institution},</if>
+            <if test="city != null">#{city},</if>
+            <if test="town != null">#{town},</if>
+            <if test="village != null">#{village},</if>
+            <if test="time != null">#{time},</if>
+            <if test="contacts != null">#{contacts},</if>
+            <if test="phone != null">#{phone},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDigitalBase" parameterType="DigitalBase">
+        update digital_base
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="shortName != null">short_name = #{shortName},</if>
+            <if test="area != null">area = #{area},</if>
+            <if test="classify != null">classify = #{classify},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="institution != null">institution = #{institution},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="town != null">town = #{town},</if>
+            <if test="village != null">village = #{village},</if>
+            <if test="time != null">time = #{time},</if>
+            <if test="contacts != null">contacts = #{contacts},</if>
+            <if test="phone != null">phone = #{phone},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDigitalBaseById" parameterType="Long">
+        delete from digital_base where id = #{id}
+    </delete>
+
+    <delete id="deleteDigitalBaseByIds" parameterType="String">
+        delete from digital_base where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
