@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.AgriculturalClassificationMapper">
+    
+    <resultMap type="AgriculturalClassification" id="AgriculturalClassificationResult">
+        <result property="id"    column="id"    />
+        <result property="classifyName"    column="classify_name"    />
+        <result property="classify"    column="classify"    />
+        <result property="photoApp"    column="photo_app"    />
+        <result property="photoCrop"    column="photo_crop"    />
+        <result property="photoDefault"    column="photo_default"    />
+        <result property="photoBackground"    column="photo_background"    />
+        <result property="status"    column="status"    />
+        <result property="operator"    column="operator"    />
+        <result property="operatingTime"    column="operating_time"    />
+    </resultMap>
+
+    <sql id="selectAgriculturalClassificationVo">
+        select id, classify_name, classify, photo_app, photo_crop, photo_default, photo_background, status, operator, operating_time from agricultural_classification
+    </sql>
+
+    <select id="selectAgriculturalClassificationList" parameterType="AgriculturalClassification" resultMap="AgriculturalClassificationResult">
+        <include refid="selectAgriculturalClassificationVo"/>
+        <where>  
+            <if test="classifyName != null  and classifyName != ''"> and classify_name like concat('%', #{classifyName}, '%')</if>
+            <if test="classify != null  and classify != ''"> and classify = #{classify}</if>
+            <if test="photoApp != null  and photoApp != ''"> and photo_app = #{photoApp}</if>
+            <if test="photoCrop != null  and photoCrop != ''"> and photo_crop = #{photoCrop}</if>
+            <if test="photoDefault != null  and photoDefault != ''"> and photo_default = #{photoDefault}</if>
+            <if test="photoBackground != null  and photoBackground != ''"> and photo_background = #{photoBackground}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="operator != null  and operator != ''"> and operator = #{operator}</if>
+            <if test="operatingTime != null "> and operating_time = #{operatingTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectAgriculturalClassificationById" parameterType="Long" resultMap="AgriculturalClassificationResult">
+        <include refid="selectAgriculturalClassificationVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertAgriculturalClassification" parameterType="AgriculturalClassification" useGeneratedKeys="true" keyProperty="id">
+        insert into agricultural_classification
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="classifyName != null">classify_name,</if>
+            <if test="classify != null">classify,</if>
+            <if test="photoApp != null">photo_app,</if>
+            <if test="photoCrop != null">photo_crop,</if>
+            <if test="photoDefault != null">photo_default,</if>
+            <if test="photoBackground != null">photo_background,</if>
+            <if test="status != null">status,</if>
+            <if test="operator != null">operator,</if>
+            <if test="operatingTime != null">operating_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="classifyName != null">#{classifyName},</if>
+            <if test="classify != null">#{classify},</if>
+            <if test="photoApp != null">#{photoApp},</if>
+            <if test="photoCrop != null">#{photoCrop},</if>
+            <if test="photoDefault != null">#{photoDefault},</if>
+            <if test="photoBackground != null">#{photoBackground},</if>
+            <if test="status != null">#{status},</if>
+            <if test="operator != null">#{operator},</if>
+            <if test="operatingTime != null">#{operatingTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAgriculturalClassification" parameterType="AgriculturalClassification">
+        update agricultural_classification
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="classifyName != null">classify_name = #{classifyName},</if>
+            <if test="classify != null">classify = #{classify},</if>
+            <if test="photoApp != null">photo_app = #{photoApp},</if>
+            <if test="photoCrop != null">photo_crop = #{photoCrop},</if>
+            <if test="photoDefault != null">photo_default = #{photoDefault},</if>
+            <if test="photoBackground != null">photo_background = #{photoBackground},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="operator != null">operator = #{operator},</if>
+            <if test="operatingTime != null">operating_time = #{operatingTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAgriculturalClassificationById" parameterType="Long">
+        delete from agricultural_classification where id = #{id}
+    </delete>
+
+    <delete id="deleteAgriculturalClassificationByIds" parameterType="String">
+        delete from agricultural_classification where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

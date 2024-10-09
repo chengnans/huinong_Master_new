@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.SoilReportMapper">
+    
+    <resultMap type="SoilReport" id="SoilReportResult">
+        <result property="id"    column="id"    />
+        <result property="soilName"    column="soil_name"    />
+        <result property="cropName"    column="crop_name"    />
+        <result property="soilLevel"    column="soil_level"    />
+        <result property="area"    column="area"    />
+        <result property="soilBaseland"    column="soil_baseland"    />
+        <result property="soilDate"    column="soil_date"    />
+    </resultMap>
+
+    <sql id="selectSoilReportVo">
+        select id, soil_name, crop_name, soil_level, area, soil_baseland, soil_date from soil_report
+    </sql>
+
+    <select id="selectSoilReportList" parameterType="SoilReport" resultMap="SoilReportResult">
+        <include refid="selectSoilReportVo"/>
+        <where>  
+            <if test="soilName != null  and soilName != ''"> and soil_name like concat('%', #{soilName}, '%')</if>
+            <if test="cropName != null  and cropName != ''"> and crop_name like concat('%', #{cropName}, '%')</if>
+            <if test="soilLevel != null  and soilLevel != ''"> and soil_level = #{soilLevel}</if>
+            <if test="area != null "> and area = #{area}</if>
+            <if test="soilBaseland != null  and soilBaseland != ''"> and soil_baseland = #{soilBaseland}</if>
+            <if test="soilDate != null "> and soil_date = #{soilDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectSoilReportById" parameterType="Long" resultMap="SoilReportResult">
+        <include refid="selectSoilReportVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSoilReport" parameterType="SoilReport" useGeneratedKeys="true" keyProperty="id">
+        insert into soil_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="soilName != null">soil_name,</if>
+            <if test="cropName != null">crop_name,</if>
+            <if test="soilLevel != null">soil_level,</if>
+            <if test="area != null">area,</if>
+            <if test="soilBaseland != null">soil_baseland,</if>
+            <if test="soilDate != null">soil_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="soilName != null">#{soilName},</if>
+            <if test="cropName != null">#{cropName},</if>
+            <if test="soilLevel != null">#{soilLevel},</if>
+            <if test="area != null">#{area},</if>
+            <if test="soilBaseland != null">#{soilBaseland},</if>
+            <if test="soilDate != null">#{soilDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSoilReport" parameterType="SoilReport">
+        update soil_report
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="soilName != null">soil_name = #{soilName},</if>
+            <if test="cropName != null">crop_name = #{cropName},</if>
+            <if test="soilLevel != null">soil_level = #{soilLevel},</if>
+            <if test="area != null">area = #{area},</if>
+            <if test="soilBaseland != null">soil_baseland = #{soilBaseland},</if>
+            <if test="soilDate != null">soil_date = #{soilDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSoilReportById" parameterType="Long">
+        delete from soil_report where id = #{id}
+    </delete>
+
+    <delete id="deleteSoilReportByIds" parameterType="String">
+        delete from soil_report where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.DisasterModelMapper">
+    
+    <resultMap type="DisasterModel" id="DisasterModelResult">
+        <result property="id"    column="id"    />
+        <result property="disasterType"    column="disaster_type"    />
+        <result property="disasterName"    column="disaster_name"    />
+        <result property="occurTime"    column="occur_time"    />
+        <result property="mainParameter"    column="main_parameter"    />
+        <result property="parameterInterval"    column="parameter_interval"    />
+        <result property="disasterDetail"    column="disaster_detail"    />
+        <result property="measures"    column="measures"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectDisasterModelVo">
+        select id, disaster_type, disaster_name, occur_time, main_parameter, parameter_interval, disaster_detail, measures, create_time from disaster_model
+    </sql>
+
+    <select id="selectDisasterModelList" parameterType="DisasterModel" resultMap="DisasterModelResult">
+        <include refid="selectDisasterModelVo"/>
+        <where>  
+            <if test="disasterType != null  and disasterType != ''"> and disaster_type = #{disasterType}</if>
+            <if test="disasterName != null  and disasterName != ''"> and disaster_name like concat('%', #{disasterName}, '%')</if>
+            <if test="occurTime != null  and occurTime != ''"> and occur_time = #{occurTime}</if>
+            <if test="mainParameter != null  and mainParameter != ''"> and main_parameter = #{mainParameter}</if>
+            <if test="parameterInterval != null  and parameterInterval != ''"> and parameter_interval = #{parameterInterval}</if>
+            <if test="disasterDetail != null  and disasterDetail != ''"> and disaster_detail = #{disasterDetail}</if>
+            <if test="measures != null  and measures != ''"> and measures = #{measures}</if>
+        </where>
+    </select>
+    
+    <select id="selectDisasterModelById" parameterType="Long" resultMap="DisasterModelResult">
+        <include refid="selectDisasterModelVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertDisasterModel" parameterType="DisasterModel" useGeneratedKeys="true" keyProperty="id">
+        insert into disaster_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="disasterType != null">disaster_type,</if>
+            <if test="disasterName != null">disaster_name,</if>
+            <if test="occurTime != null">occur_time,</if>
+            <if test="mainParameter != null">main_parameter,</if>
+            <if test="parameterInterval != null">parameter_interval,</if>
+            <if test="disasterDetail != null">disaster_detail,</if>
+            <if test="measures != null">measures,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="disasterType != null">#{disasterType},</if>
+            <if test="disasterName != null">#{disasterName},</if>
+            <if test="occurTime != null">#{occurTime},</if>
+            <if test="mainParameter != null">#{mainParameter},</if>
+            <if test="parameterInterval != null">#{parameterInterval},</if>
+            <if test="disasterDetail != null">#{disasterDetail},</if>
+            <if test="measures != null">#{measures},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDisasterModel" parameterType="DisasterModel">
+        update disaster_model
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="disasterType != null">disaster_type = #{disasterType},</if>
+            <if test="disasterName != null">disaster_name = #{disasterName},</if>
+            <if test="occurTime != null">occur_time = #{occurTime},</if>
+            <if test="mainParameter != null">main_parameter = #{mainParameter},</if>
+            <if test="parameterInterval != null">parameter_interval = #{parameterInterval},</if>
+            <if test="disasterDetail != null">disaster_detail = #{disasterDetail},</if>
+            <if test="measures != null">measures = #{measures},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDisasterModelById" parameterType="Long">
+        delete from disaster_model where id = #{id}
+    </delete>
+
+    <delete id="deleteDisasterModelByIds" parameterType="String">
+        delete from disaster_model where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

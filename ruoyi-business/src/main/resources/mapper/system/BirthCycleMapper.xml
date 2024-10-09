@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.BirthCycleMapper">
+    
+    <resultMap type="BirthCycle" id="BirthCycleResult">
+        <result property="id"    column="id"    />
+        <result property="cropName"    column="crop_name"    />
+        <result property="type"    column="type"    />
+        <result property="periodName"    column="period_name"    />
+        <result property="birthType"    column="birth_type"    />
+        <result property="birthTime"    column="birth_time"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectBirthCycleVo">
+        select id, crop_name, type, period_name, birth_type, birth_time, create_time from birth_cycle
+    </sql>
+
+    <select id="selectBirthCycleList" parameterType="BirthCycle" resultMap="BirthCycleResult">
+        <include refid="selectBirthCycleVo"/>
+        <where>  
+            <if test="cropName != null  and cropName != ''"> and crop_name like concat('%', #{cropName}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="periodName != null  and periodName != ''"> and period_name like concat('%', #{periodName}, '%')</if>
+            <if test="birthType != null  and birthType != ''"> and birth_type = #{birthType}</if>
+            <if test="birthTime != null  and birthTime != ''"> and birth_time = #{birthTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectBirthCycleById" parameterType="Long" resultMap="BirthCycleResult">
+        <include refid="selectBirthCycleVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBirthCycle" parameterType="BirthCycle" useGeneratedKeys="true" keyProperty="id">
+        insert into birth_cycle
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cropName != null">crop_name,</if>
+            <if test="type != null">type,</if>
+            <if test="periodName != null">period_name,</if>
+            <if test="birthType != null">birth_type,</if>
+            <if test="birthTime != null">birth_time,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cropName != null">#{cropName},</if>
+            <if test="type != null">#{type},</if>
+            <if test="periodName != null">#{periodName},</if>
+            <if test="birthType != null">#{birthType},</if>
+            <if test="birthTime != null">#{birthTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBirthCycle" parameterType="BirthCycle">
+        update birth_cycle
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cropName != null">crop_name = #{cropName},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="periodName != null">period_name = #{periodName},</if>
+            <if test="birthType != null">birth_type = #{birthType},</if>
+            <if test="birthTime != null">birth_time = #{birthTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBirthCycleById" parameterType="Long">
+        delete from birth_cycle where id = #{id}
+    </delete>
+
+    <delete id="deleteBirthCycleByIds" parameterType="String">
+        delete from birth_cycle where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

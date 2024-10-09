@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.DeviceCenterMapper">
+    
+    <resultMap type="DeviceCenter" id="DeviceCenterResult">
+        <result property="IMEI"    column="IMEI"    />
+        <result property="deviceClassify"    column="device_classify"    />
+        <result property="deviceName"    column="device_name"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="resource"    column="resource"    />
+        <result property="organization"    column="organization"    />
+    </resultMap>
+
+    <sql id="selectDeviceCenterVo">
+        select IMEI, device_classify, device_name, device_id, resource, organization from device_center
+    </sql>
+
+    <select id="selectDeviceCenterList" parameterType="DeviceCenter" resultMap="DeviceCenterResult">
+        <include refid="selectDeviceCenterVo"/>
+        <where>  
+            <if test="IMEI != null  and IMEI != ''"> and IMEI = #{IMEI}</if>
+            <if test="deviceClassify != null "> and device_classify = #{deviceClassify}</if>
+            <if test="deviceName != null  and deviceName != ''"> and device_name like concat('%', #{deviceName}, '%')</if>
+            <if test="deviceId != null  and deviceId != ''"> and device_id = #{deviceId}</if>
+            <if test="resource != null  and resource != ''"> and resource = #{resource}</if>
+            <if test="organization != null  and organization != ''"> and organization = #{organization}</if>
+        </where>
+    </select>
+    
+    <select id="selectDeviceCenterByIMEI" parameterType="String" resultMap="DeviceCenterResult">
+        <include refid="selectDeviceCenterVo"/>
+        where IMEI = #{IMEI}
+    </select>
+
+    <insert id="insertDeviceCenter" parameterType="DeviceCenter">
+        insert into device_center
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="IMEI != null">IMEI,</if>
+            <if test="deviceClassify != null">device_classify,</if>
+            <if test="deviceName != null">device_name,</if>
+            <if test="deviceId != null">device_id,</if>
+            <if test="resource != null">resource,</if>
+            <if test="organization != null">organization,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="IMEI != null">#{IMEI},</if>
+            <if test="deviceClassify != null">#{deviceClassify},</if>
+            <if test="deviceName != null">#{deviceName},</if>
+            <if test="deviceId != null">#{deviceId},</if>
+            <if test="resource != null">#{resource},</if>
+            <if test="organization != null">#{organization},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDeviceCenter" parameterType="DeviceCenter">
+        update device_center
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceClassify != null">device_classify = #{deviceClassify},</if>
+            <if test="deviceName != null">device_name = #{deviceName},</if>
+            <if test="deviceId != null">device_id = #{deviceId},</if>
+            <if test="resource != null">resource = #{resource},</if>
+            <if test="organization != null">organization = #{organization},</if>
+        </trim>
+        where IMEI = #{IMEI}
+    </update>
+
+    <delete id="deleteDeviceCenterByIMEI" parameterType="String">
+        delete from device_center where IMEI = #{IMEI}
+    </delete>
+
+    <delete id="deleteDeviceCenterByIMEIs" parameterType="String">
+        delete from device_center where IMEI in 
+        <foreach item="IMEI" collection="array" open="(" separator="," close=")">
+            #{IMEI}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.ModelDatabaseMapper">
+    
+    <resultMap type="ModelDatabase" id="ModelDatabaseResult">
+        <result property="id"    column="id"    />
+        <result property="baselandName"    column="baseland_name"    />
+        <result property="cropName"    column="crop_name"    />
+        <result property="growCycleType"    column="grow_cycle_type"    />
+        <result property="averageYield"    column="average_yield"    />
+        <result property="forecastYield"    column="forecast_yield"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectModelDatabaseVo">
+        select id, baseland_name, crop_name, grow_cycle_type, average_yield, forecast_yield, create_time from model_database
+    </sql>
+
+    <select id="selectModelDatabaseList" parameterType="ModelDatabase" resultMap="ModelDatabaseResult">
+        <include refid="selectModelDatabaseVo"/>
+        <where>  
+            <if test="baselandName != null "> and baseland_name like concat('%', #{baselandName}, '%')</if>
+            <if test="cropName != null  and cropName != ''"> and crop_name like concat('%', #{cropName}, '%')</if>
+            <if test="growCycleType != null "> and grow_cycle_type = #{growCycleType}</if>
+            <if test="averageYield != null  and averageYield != ''"> and average_yield = #{averageYield}</if>
+            <if test="forecastYield != null "> and forecast_yield = #{forecastYield}</if>
+        </where>
+    </select>
+    
+    <select id="selectModelDatabaseById" parameterType="Long" resultMap="ModelDatabaseResult">
+        <include refid="selectModelDatabaseVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertModelDatabase" parameterType="ModelDatabase" useGeneratedKeys="true" keyProperty="id">
+        insert into model_database
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="baselandName != null">baseland_name,</if>
+            <if test="cropName != null">crop_name,</if>
+            <if test="growCycleType != null">grow_cycle_type,</if>
+            <if test="averageYield != null">average_yield,</if>
+            <if test="forecastYield != null">forecast_yield,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="baselandName != null">#{baselandName},</if>
+            <if test="cropName != null">#{cropName},</if>
+            <if test="growCycleType != null">#{growCycleType},</if>
+            <if test="averageYield != null">#{averageYield},</if>
+            <if test="forecastYield != null">#{forecastYield},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateModelDatabase" parameterType="ModelDatabase">
+        update model_database
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="baselandName != null">baseland_name = #{baselandName},</if>
+            <if test="cropName != null">crop_name = #{cropName},</if>
+            <if test="growCycleType != null">grow_cycle_type = #{growCycleType},</if>
+            <if test="averageYield != null">average_yield = #{averageYield},</if>
+            <if test="forecastYield != null">forecast_yield = #{forecastYield},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteModelDatabaseById" parameterType="Long">
+        delete from model_database where id = #{id}
+    </delete>
+
+    <delete id="deleteModelDatabaseByIds" parameterType="String">
+        delete from model_database where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

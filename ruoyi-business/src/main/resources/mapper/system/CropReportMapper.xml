@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.CropReportMapper">
+    
+    <resultMap type="CropReport" id="CropReportResult">
+        <result property="id"    column="id"    />
+        <result property="cropPhoto"    column="crop_photo"    />
+        <result property="cropName"    column="crop_name"    />
+        <result property="st"    column="st"    />
+        <result property="photoDefault"    column="photo_default"    />
+        <result property="status"    column="status"    />
+        <result property="operator"    column="operator"    />
+        <result property="operatingTime"    column="operating_time"    />
+    </resultMap>
+
+    <sql id="selectCropReportVo">
+        select id, crop_photo, crop_name, st, photo_default, status, operator, operating_time from crop_report
+    </sql>
+
+    <select id="selectCropReportList" parameterType="CropReport" resultMap="CropReportResult">
+        <include refid="selectCropReportVo"/>
+        <where>  
+            <if test="cropPhoto != null  and cropPhoto != ''"> and crop_photo = #{cropPhoto}</if>
+            <if test="cropName != null  and cropName != ''"> and crop_name like concat('%', #{cropName}, '%')</if>
+            <if test="st != null  and st != ''"> and st = #{st}</if>
+            <if test="photoDefault != null  and photoDefault != ''"> and photo_default = #{photoDefault}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="operator != null  and operator != ''"> and operator = #{operator}</if>
+            <if test="operatingTime != null "> and operating_time = #{operatingTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectCropReportById" parameterType="Long" resultMap="CropReportResult">
+        <include refid="selectCropReportVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCropReport" parameterType="CropReport" useGeneratedKeys="true" keyProperty="id">
+        insert into crop_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cropPhoto != null">crop_photo,</if>
+            <if test="cropName != null">crop_name,</if>
+            <if test="st != null">st,</if>
+            <if test="photoDefault != null">photo_default,</if>
+            <if test="status != null">status,</if>
+            <if test="operator != null">operator,</if>
+            <if test="operatingTime != null">operating_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cropPhoto != null">#{cropPhoto},</if>
+            <if test="cropName != null">#{cropName},</if>
+            <if test="st != null">#{st},</if>
+            <if test="photoDefault != null">#{photoDefault},</if>
+            <if test="status != null">#{status},</if>
+            <if test="operator != null">#{operator},</if>
+            <if test="operatingTime != null">#{operatingTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCropReport" parameterType="CropReport">
+        update crop_report
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cropPhoto != null">crop_photo = #{cropPhoto},</if>
+            <if test="cropName != null">crop_name = #{cropName},</if>
+            <if test="st != null">st = #{st},</if>
+            <if test="photoDefault != null">photo_default = #{photoDefault},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="operator != null">operator = #{operator},</if>
+            <if test="operatingTime != null">operating_time = #{operatingTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCropReportById" parameterType="Long">
+        delete from crop_report where id = #{id}
+    </delete>
+
+    <delete id="deleteCropReportByIds" parameterType="String">
+        delete from crop_report where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

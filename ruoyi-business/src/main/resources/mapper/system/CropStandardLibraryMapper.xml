@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.CropStandardLibraryMapper">
+    
+    <resultMap type="CropStandardLibrary" id="CropStandardLibraryResult">
+        <result property="id"    column="id"    />
+        <result property="cropPhoto"    column="crop_photo"    />
+        <result property="cropName"    column="crop_name"    />
+        <result property="type"    column="type"    />
+        <result property="classificationLevel"    column="classification_level"    />
+        <result property="status"    column="status"    />
+        <result property="operator"    column="operator"    />
+        <result property="operatingTime"    column="operating_time"    />
+    </resultMap>
+
+    <sql id="selectCropStandardLibraryVo">
+        select id, crop_photo, crop_name, type, classification_level, status, operator, operating_time from crop_standard_library
+    </sql>
+
+    <select id="selectCropStandardLibraryList" parameterType="CropStandardLibrary" resultMap="CropStandardLibraryResult">
+        <include refid="selectCropStandardLibraryVo"/>
+        <where>  
+            <if test="cropPhoto != null  and cropPhoto != ''"> and crop_photo = #{cropPhoto}</if>
+            <if test="cropName != null  and cropName != ''"> and crop_name like concat('%', #{cropName}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="classificationLevel != null  and classificationLevel != ''"> and classification_level = #{classificationLevel}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="operator != null  and operator != ''"> and operator = #{operator}</if>
+            <if test="operatingTime != null "> and operating_time = #{operatingTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectCropStandardLibraryById" parameterType="Long" resultMap="CropStandardLibraryResult">
+        <include refid="selectCropStandardLibraryVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCropStandardLibrary" parameterType="CropStandardLibrary" useGeneratedKeys="true" keyProperty="id">
+        insert into crop_standard_library
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cropPhoto != null">crop_photo,</if>
+            <if test="cropName != null">crop_name,</if>
+            <if test="type != null">type,</if>
+            <if test="classificationLevel != null">classification_level,</if>
+            <if test="status != null">status,</if>
+            <if test="operator != null">operator,</if>
+            <if test="operatingTime != null">operating_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cropPhoto != null">#{cropPhoto},</if>
+            <if test="cropName != null">#{cropName},</if>
+            <if test="type != null">#{type},</if>
+            <if test="classificationLevel != null">#{classificationLevel},</if>
+            <if test="status != null">#{status},</if>
+            <if test="operator != null">#{operator},</if>
+            <if test="operatingTime != null">#{operatingTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCropStandardLibrary" parameterType="CropStandardLibrary">
+        update crop_standard_library
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cropPhoto != null">crop_photo = #{cropPhoto},</if>
+            <if test="cropName != null">crop_name = #{cropName},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="classificationLevel != null">classification_level = #{classificationLevel},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="operator != null">operator = #{operator},</if>
+            <if test="operatingTime != null">operating_time = #{operatingTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCropStandardLibraryById" parameterType="Long">
+        delete from crop_standard_library where id = #{id}
+    </delete>
+
+    <delete id="deleteCropStandardLibraryByIds" parameterType="String">
+        delete from crop_standard_library where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

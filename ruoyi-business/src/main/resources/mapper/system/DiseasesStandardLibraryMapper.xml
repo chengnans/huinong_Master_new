@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.DiseasesStandardLibraryMapper">
+    
+    <resultMap type="DiseasesStandardLibrary" id="DiseasesStandardLibraryResult">
+        <result property="id"    column="id"    />
+        <result property="diseasesName"    column="diseases_name"    />
+        <result property="diseasesType"    column="diseases_type"    />
+        <result property="resource"    column="resource"    />
+        <result property="cropName"    column="crop_name"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectDiseasesStandardLibraryVo">
+        select id, diseases_name, diseases_type, resource, crop_name, status, create_time from diseases_standard_library
+    </sql>
+
+    <select id="selectDiseasesStandardLibraryList" parameterType="DiseasesStandardLibrary" resultMap="DiseasesStandardLibraryResult">
+        <include refid="selectDiseasesStandardLibraryVo"/>
+        <where>  
+            <if test="diseasesName != null  and diseasesName != ''"> and diseases_name like concat('%', #{diseasesName}, '%')</if>
+            <if test="diseasesType != null  and diseasesType != ''"> and diseases_type = #{diseasesType}</if>
+            <if test="resource != null  and resource != ''"> and resource = #{resource}</if>
+            <if test="cropName != null  and cropName != ''"> and crop_name like concat('%', #{cropName}, '%')</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectDiseasesStandardLibraryById" parameterType="Long" resultMap="DiseasesStandardLibraryResult">
+        <include refid="selectDiseasesStandardLibraryVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertDiseasesStandardLibrary" parameterType="DiseasesStandardLibrary" useGeneratedKeys="true" keyProperty="id">
+        insert into diseases_standard_library
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="diseasesName != null">diseases_name,</if>
+            <if test="diseasesType != null">diseases_type,</if>
+            <if test="resource != null">resource,</if>
+            <if test="cropName != null">crop_name,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="diseasesName != null">#{diseasesName},</if>
+            <if test="diseasesType != null">#{diseasesType},</if>
+            <if test="resource != null">#{resource},</if>
+            <if test="cropName != null">#{cropName},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDiseasesStandardLibrary" parameterType="DiseasesStandardLibrary">
+        update diseases_standard_library
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="diseasesName != null">diseases_name = #{diseasesName},</if>
+            <if test="diseasesType != null">diseases_type = #{diseasesType},</if>
+            <if test="resource != null">resource = #{resource},</if>
+            <if test="cropName != null">crop_name = #{cropName},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDiseasesStandardLibraryById" parameterType="Long">
+        delete from diseases_standard_library where id = #{id}
+    </delete>
+
+    <delete id="deleteDiseasesStandardLibraryByIds" parameterType="String">
+        delete from diseases_standard_library where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.OverviewStatisticsMapper">
+    
+    <resultMap type="OverviewStatistics" id="OverviewStatisticsResult">
+        <result property="id"    column="id"    />
+        <result property="alarmTime"    column="alarm_time"    />
+        <result property="deviceName"    column="device_name"    />
+        <result property="alarmType"    column="alarm_type"    />
+        <result property="alarmReason"    column="alarm_reason"    />
+        <result property="alarmBaseland"    column="alarm_baseland"    />
+    </resultMap>
+
+    <sql id="selectOverviewStatisticsVo">
+        select id, alarm_time, device_name, alarm_type, alarm_reason, alarm_baseland from overview_statistics
+    </sql>
+
+    <select id="selectOverviewStatisticsList" parameterType="OverviewStatistics" resultMap="OverviewStatisticsResult">
+        <include refid="selectOverviewStatisticsVo"/>
+        <where>  
+            <if test="alarmTime != null "> and alarm_time = #{alarmTime}</if>
+            <if test="deviceName != null  and deviceName != ''"> and device_name like concat('%', #{deviceName}, '%')</if>
+            <if test="alarmType != null  and alarmType != ''"> and alarm_type = #{alarmType}</if>
+            <if test="alarmReason != null  and alarmReason != ''"> and alarm_reason = #{alarmReason}</if>
+            <if test="alarmBaseland != null  and alarmBaseland != ''"> and alarm_baseland = #{alarmBaseland}</if>
+        </where>
+    </select>
+    
+    <select id="selectOverviewStatisticsById" parameterType="Long" resultMap="OverviewStatisticsResult">
+        <include refid="selectOverviewStatisticsVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOverviewStatistics" parameterType="OverviewStatistics" useGeneratedKeys="true" keyProperty="id">
+        insert into overview_statistics
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="alarmTime != null">alarm_time,</if>
+            <if test="deviceName != null">device_name,</if>
+            <if test="alarmType != null">alarm_type,</if>
+            <if test="alarmReason != null">alarm_reason,</if>
+            <if test="alarmBaseland != null">alarm_baseland,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="alarmTime != null">#{alarmTime},</if>
+            <if test="deviceName != null">#{deviceName},</if>
+            <if test="alarmType != null">#{alarmType},</if>
+            <if test="alarmReason != null">#{alarmReason},</if>
+            <if test="alarmBaseland != null">#{alarmBaseland},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOverviewStatistics" parameterType="OverviewStatistics">
+        update overview_statistics
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="alarmTime != null">alarm_time = #{alarmTime},</if>
+            <if test="deviceName != null">device_name = #{deviceName},</if>
+            <if test="alarmType != null">alarm_type = #{alarmType},</if>
+            <if test="alarmReason != null">alarm_reason = #{alarmReason},</if>
+            <if test="alarmBaseland != null">alarm_baseland = #{alarmBaseland},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOverviewStatisticsById" parameterType="Long">
+        delete from overview_statistics where id = #{id}
+    </delete>
+
+    <delete id="deleteOverviewStatisticsByIds" parameterType="String">
+        delete from overview_statistics where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
