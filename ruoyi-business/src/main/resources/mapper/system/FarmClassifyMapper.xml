@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.FarmClassifyMapper">
+    
+    <resultMap type="FarmClassify" id="FarmClassifyResult">
+        <result property="id"    column="id"    />
+        <result property="farmClassify"    column="farm_classify"    />
+        <result property="farmOperation"    column="farm_operation"    />
+        <result property="operateRequire"    column="operate_require"    />
+        <result property="organization"    column="organization"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectFarmClassifyVo">
+        select id, farm_classify, farm_operation, operate_require, organization, status, create_time from farm_classify
+    </sql>
+
+    <select id="selectFarmClassifyList" parameterType="FarmClassify" resultMap="FarmClassifyResult">
+        <include refid="selectFarmClassifyVo"/>
+        <where>  
+            <if test="farmClassify != null "> and farm_classify = #{farmClassify}</if>
+            <if test="farmOperation != null  and farmOperation != ''"> and farm_operation = #{farmOperation}</if>
+            <if test="operateRequire != null  and operateRequire != ''"> and operate_require = #{operateRequire}</if>
+            <if test="organization != null  and organization != ''"> and organization = #{organization}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectFarmClassifyById" parameterType="Long" resultMap="FarmClassifyResult">
+        <include refid="selectFarmClassifyVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertFarmClassify" parameterType="FarmClassify" useGeneratedKeys="true" keyProperty="id">
+        insert into farm_classify
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="farmClassify != null">farm_classify,</if>
+            <if test="farmOperation != null">farm_operation,</if>
+            <if test="operateRequire != null">operate_require,</if>
+            <if test="organization != null">organization,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="farmClassify != null">#{farmClassify},</if>
+            <if test="farmOperation != null">#{farmOperation},</if>
+            <if test="operateRequire != null">#{operateRequire},</if>
+            <if test="organization != null">#{organization},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFarmClassify" parameterType="FarmClassify">
+        update farm_classify
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="farmClassify != null">farm_classify = #{farmClassify},</if>
+            <if test="farmOperation != null">farm_operation = #{farmOperation},</if>
+            <if test="operateRequire != null">operate_require = #{operateRequire},</if>
+            <if test="organization != null">organization = #{organization},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFarmClassifyById" parameterType="Long">
+        delete from farm_classify where id = #{id}
+    </delete>
+
+    <delete id="deleteFarmClassifyByIds" parameterType="String">
+        delete from farm_classify where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

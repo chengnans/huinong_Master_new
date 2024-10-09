@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.FarmResourceMapper">
+    
+    <resultMap type="FarmResource" id="FarmResourceResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="name"    column="name"    />
+        <result property="anotherName"    column="another_name"    />
+        <result property="measuringUnit"    column="measuring_unit"    />
+        <result property="specification"    column="specification"    />
+        <result property="description"    column="description"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectFarmResourceVo">
+        select id, type, name, another_name, measuring_unit, specification, description, status, create_time from farm_resource
+    </sql>
+
+    <select id="selectFarmResourceList" parameterType="FarmResource" resultMap="FarmResourceResult">
+        <include refid="selectFarmResourceVo"/>
+        <where>  
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="anotherName != null  and anotherName != ''"> and another_name like concat('%', #{anotherName}, '%')</if>
+            <if test="measuringUnit != null  and measuringUnit != ''"> and measuring_unit = #{measuringUnit}</if>
+            <if test="specification != null  and specification != ''"> and specification = #{specification}</if>
+            <if test="description != null  and description != ''"> and description = #{description}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectFarmResourceById" parameterType="Long" resultMap="FarmResourceResult">
+        <include refid="selectFarmResourceVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertFarmResource" parameterType="FarmResource" useGeneratedKeys="true" keyProperty="id">
+        insert into farm_resource
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null">type,</if>
+            <if test="name != null">name,</if>
+            <if test="anotherName != null">another_name,</if>
+            <if test="measuringUnit != null">measuring_unit,</if>
+            <if test="specification != null">specification,</if>
+            <if test="description != null">description,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null">#{type},</if>
+            <if test="name != null">#{name},</if>
+            <if test="anotherName != null">#{anotherName},</if>
+            <if test="measuringUnit != null">#{measuringUnit},</if>
+            <if test="specification != null">#{specification},</if>
+            <if test="description != null">#{description},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFarmResource" parameterType="FarmResource">
+        update farm_resource
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">type = #{type},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="anotherName != null">another_name = #{anotherName},</if>
+            <if test="measuringUnit != null">measuring_unit = #{measuringUnit},</if>
+            <if test="specification != null">specification = #{specification},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFarmResourceById" parameterType="Long">
+        delete from farm_resource where id = #{id}
+    </delete>
+
+    <delete id="deleteFarmResourceByIds" parameterType="String">
+        delete from farm_resource where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
