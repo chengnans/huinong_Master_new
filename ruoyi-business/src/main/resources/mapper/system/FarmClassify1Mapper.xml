@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.FarmClassify1Mapper">
+    
+    <resultMap type="FarmClassify1" id="FarmClassify1Result">
+        <result property="id"    column="id"    />
+        <result property="farmClassify"    column="farm_classify"    />
+        <result property="farmName"    column="farm_name"    />
+        <result property="farmKey"    column="farm_key"    />
+        <result property="used"    column="used"    />
+        <result property="organization"    column="organization"    />
+        <result property="resource"    column="resource"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectFarmClassify1Vo">
+        select id, farm_classify, farm_name, farm_key, used, organization, resource, status, create_time from farm_classify1
+    </sql>
+
+    <select id="selectFarmClassify1List" parameterType="FarmClassify1" resultMap="FarmClassify1Result">
+        <include refid="selectFarmClassify1Vo"/>
+        <where>  
+            <if test="farmClassify != null  and farmClassify != ''"> and farm_classify = #{farmClassify}</if>
+            <if test="farmName != null  and farmName != ''"> and farm_name like concat('%', #{farmName}, '%')</if>
+            <if test="farmKey != null  and farmKey != ''"> and farm_key = #{farmKey}</if>
+            <if test="used != null  and used != ''"> and used = #{used}</if>
+            <if test="organization != null  and organization != ''"> and organization = #{organization}</if>
+            <if test="resource != null  and resource != ''"> and resource = #{resource}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectFarmClassify1ById" parameterType="Long" resultMap="FarmClassify1Result">
+        <include refid="selectFarmClassify1Vo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertFarmClassify1" parameterType="FarmClassify1" useGeneratedKeys="true" keyProperty="id">
+        insert into farm_classify1
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="farmClassify != null">farm_classify,</if>
+            <if test="farmName != null">farm_name,</if>
+            <if test="farmKey != null">farm_key,</if>
+            <if test="used != null">used,</if>
+            <if test="organization != null">organization,</if>
+            <if test="resource != null">resource,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="farmClassify != null">#{farmClassify},</if>
+            <if test="farmName != null">#{farmName},</if>
+            <if test="farmKey != null">#{farmKey},</if>
+            <if test="used != null">#{used},</if>
+            <if test="organization != null">#{organization},</if>
+            <if test="resource != null">#{resource},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFarmClassify1" parameterType="FarmClassify1">
+        update farm_classify1
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="farmClassify != null">farm_classify = #{farmClassify},</if>
+            <if test="farmName != null">farm_name = #{farmName},</if>
+            <if test="farmKey != null">farm_key = #{farmKey},</if>
+            <if test="used != null">used = #{used},</if>
+            <if test="organization != null">organization = #{organization},</if>
+            <if test="resource != null">resource = #{resource},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFarmClassify1ById" parameterType="Long">
+        delete from farm_classify1 where id = #{id}
+    </delete>
+
+    <delete id="deleteFarmClassify1ByIds" parameterType="String">
+        delete from farm_classify1 where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

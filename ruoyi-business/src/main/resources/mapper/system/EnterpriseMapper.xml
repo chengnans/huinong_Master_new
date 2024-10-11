@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.EnterpriseMapper">
+    
+    <resultMap type="Enterprise" id="EnterpriseResult">
+        <result property="id"    column="id"    />
+        <result property="organization"    column="organization"    />
+        <result property="primaryClassify"    column="primary_classify"    />
+        <result property="shortName"    column="short_name"    />
+        <result property="intro"    column="intro"    />
+        <result property="show"    column="show"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectEnterpriseVo">
+        select id, organization, primary_classify, short_name, intro, show, create_time, update_time from enterprise
+    </sql>
+
+    <select id="selectEnterpriseList" parameterType="Enterprise" resultMap="EnterpriseResult">
+        <include refid="selectEnterpriseVo"/>
+        <where>  
+            <if test="organization != null  and organization != ''"> and organization = #{organization}</if>
+            <if test="primaryClassify != null  and primaryClassify != ''"> and primary_classify = #{primaryClassify}</if>
+            <if test="shortName != null  and shortName != ''"> and short_name like concat('%', #{shortName}, '%')</if>
+            <if test="intro != null  and intro != ''"> and intro = #{intro}</if>
+            <if test="show != null  and show != ''"> and show = #{show}</if>
+        </where>
+    </select>
+    
+    <select id="selectEnterpriseById" parameterType="Long" resultMap="EnterpriseResult">
+        <include refid="selectEnterpriseVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertEnterprise" parameterType="Enterprise" useGeneratedKeys="true" keyProperty="id">
+        insert into enterprise
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="organization != null">organization,</if>
+            <if test="primaryClassify != null">primary_classify,</if>
+            <if test="shortName != null">short_name,</if>
+            <if test="intro != null">intro,</if>
+            <if test="show != null">show,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="organization != null">#{organization},</if>
+            <if test="primaryClassify != null">#{primaryClassify},</if>
+            <if test="shortName != null">#{shortName},</if>
+            <if test="intro != null">#{intro},</if>
+            <if test="show != null">#{show},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEnterprise" parameterType="Enterprise">
+        update enterprise
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="organization != null">organization = #{organization},</if>
+            <if test="primaryClassify != null">primary_classify = #{primaryClassify},</if>
+            <if test="shortName != null">short_name = #{shortName},</if>
+            <if test="intro != null">intro = #{intro},</if>
+            <if test="show != null">show = #{show},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEnterpriseById" parameterType="Long">
+        delete from enterprise where id = #{id}
+    </delete>
+
+    <delete id="deleteEnterpriseByIds" parameterType="String">
+        delete from enterprise where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

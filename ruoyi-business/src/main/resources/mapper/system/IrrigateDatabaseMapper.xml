@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.IrrigateDatabaseMapper">
+    
+    <resultMap type="IrrigateDatabase" id="IrrigateDatabaseResult">
+        <result property="id"    column="id"    />
+        <result property="baselandName"    column="baseland_name"    />
+        <result property="irrigateName"    column="irrigate_name"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectIrrigateDatabaseVo">
+        select id, baseland_name, irrigate_name, create_time from irrigate_database
+    </sql>
+
+    <select id="selectIrrigateDatabaseList" parameterType="IrrigateDatabase" resultMap="IrrigateDatabaseResult">
+        <include refid="selectIrrigateDatabaseVo"/>
+        <where>  
+            <if test="baselandName != null  and baselandName != ''"> and baseland_name like concat('%', #{baselandName}, '%')</if>
+            <if test="irrigateName != null  and irrigateName != ''"> and irrigate_name like concat('%', #{irrigateName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectIrrigateDatabaseById" parameterType="Long" resultMap="IrrigateDatabaseResult">
+        <include refid="selectIrrigateDatabaseVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertIrrigateDatabase" parameterType="IrrigateDatabase" useGeneratedKeys="true" keyProperty="id">
+        insert into irrigate_database
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="baselandName != null">baseland_name,</if>
+            <if test="irrigateName != null">irrigate_name,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="baselandName != null">#{baselandName},</if>
+            <if test="irrigateName != null">#{irrigateName},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateIrrigateDatabase" parameterType="IrrigateDatabase">
+        update irrigate_database
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="baselandName != null">baseland_name = #{baselandName},</if>
+            <if test="irrigateName != null">irrigate_name = #{irrigateName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteIrrigateDatabaseById" parameterType="Long">
+        delete from irrigate_database where id = #{id}
+    </delete>
+
+    <delete id="deleteIrrigateDatabaseByIds" parameterType="String">
+        delete from irrigate_database where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
