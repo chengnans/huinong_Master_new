@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.OriginManagementMapper">
+    
+    <resultMap type="OriginManagement" id="OriginManagementResult">
+        <result property="id"    column="id"    />
+        <result property="producingArea"    column="producing_area"    />
+        <result property="creator"    column="creator"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectOriginManagementVo">
+        select id, producing_area, creator, create_time from origin_management
+    </sql>
+
+    <select id="selectOriginManagementList" parameterType="OriginManagement" resultMap="OriginManagementResult">
+        <include refid="selectOriginManagementVo"/>
+        <where>  
+            <if test="producingArea != null  and producingArea != ''"> and producing_area = #{producingArea}</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectOriginManagementById" parameterType="Long" resultMap="OriginManagementResult">
+        <include refid="selectOriginManagementVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOriginManagement" parameterType="OriginManagement" useGeneratedKeys="true" keyProperty="id">
+        insert into origin_management
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="producingArea != null">producing_area,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="producingArea != null">#{producingArea},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOriginManagement" parameterType="OriginManagement">
+        update origin_management
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="producingArea != null">producing_area = #{producingArea},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOriginManagementById" parameterType="Long">
+        delete from origin_management where id = #{id}
+    </delete>
+
+    <delete id="deleteOriginManagementByIds" parameterType="String">
+        delete from origin_management where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

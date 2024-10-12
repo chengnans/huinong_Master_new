@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.GeneralMenuSetMapper">
+    
+    <resultMap type="GeneralMenuSet" id="GeneralMenuSetResult">
+        <result property="id"    column="id"    />
+        <result property="menuGroupName"    column="menu_group_name"    />
+        <result property="menuChildName"    column="menu_child_name"    />
+        <result property="releaseOption"    column="release_option"    />
+        <result property="releaseView"    column="release_view"    />
+        <result property="organization"    column="organization"    />
+        <result property="condition"    column="condition"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectGeneralMenuSetVo">
+        select id, menu_group_name, menu_child_name, release_option, release_view, organization, condition, update_time, create_time from general_menu_set
+    </sql>
+
+    <select id="selectGeneralMenuSetList" parameterType="GeneralMenuSet" resultMap="GeneralMenuSetResult">
+        <include refid="selectGeneralMenuSetVo"/>
+        <where>  
+            <if test="menuGroupName != null  and menuGroupName != ''"> and menu_group_name like concat('%', #{menuGroupName}, '%')</if>
+            <if test="menuChildName != null  and menuChildName != ''"> and menu_child_name like concat('%', #{menuChildName}, '%')</if>
+            <if test="releaseOption != null  and releaseOption != ''"> and release_option = #{releaseOption}</if>
+            <if test="releaseView != null  and releaseView != ''"> and release_view = #{releaseView}</if>
+            <if test="organization != null  and organization != ''"> and organization = #{organization}</if>
+            <if test="condition != null  and condition != ''"> and condition = #{condition}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectGeneralMenuSetById" parameterType="Long" resultMap="GeneralMenuSetResult">
+        <include refid="selectGeneralMenuSetVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertGeneralMenuSet" parameterType="GeneralMenuSet" useGeneratedKeys="true" keyProperty="id">
+        insert into general_menu_set
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="menuGroupName != null">menu_group_name,</if>
+            <if test="menuChildName != null">menu_child_name,</if>
+            <if test="releaseOption != null">release_option,</if>
+            <if test="releaseView != null">release_view,</if>
+            <if test="organization != null">organization,</if>
+            <if test="condition != null">condition,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="menuGroupName != null">#{menuGroupName},</if>
+            <if test="menuChildName != null">#{menuChildName},</if>
+            <if test="releaseOption != null">#{releaseOption},</if>
+            <if test="releaseView != null">#{releaseView},</if>
+            <if test="organization != null">#{organization},</if>
+            <if test="condition != null">#{condition},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGeneralMenuSet" parameterType="GeneralMenuSet">
+        update general_menu_set
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="menuGroupName != null">menu_group_name = #{menuGroupName},</if>
+            <if test="menuChildName != null">menu_child_name = #{menuChildName},</if>
+            <if test="releaseOption != null">release_option = #{releaseOption},</if>
+            <if test="releaseView != null">release_view = #{releaseView},</if>
+            <if test="organization != null">organization = #{organization},</if>
+            <if test="condition != null">condition = #{condition},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGeneralMenuSetById" parameterType="Long">
+        delete from general_menu_set where id = #{id}
+    </delete>
+
+    <delete id="deleteGeneralMenuSetByIds" parameterType="String">
+        delete from general_menu_set where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

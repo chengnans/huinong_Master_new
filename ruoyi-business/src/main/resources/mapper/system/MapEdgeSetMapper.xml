@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.MapEdgeSetMapper">
+    
+    <resultMap type="MapEdgeSet" id="MapEdgeSetResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="relevantSystem"    column="relevant_system"    />
+        <result property="releaseMenu"    column="release_menu"    />
+        <result property="relevantOrganization"    column="relevant_organization"    />
+        <result property="detail"    column="detail"    />
+        <result property="zhuang"    column="zhuang"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectMapEdgeSetVo">
+        select id, name, relevant_system, release_menu, relevant_organization, detail, zhuang, create_time from map_edge_set
+    </sql>
+
+    <select id="selectMapEdgeSetList" parameterType="MapEdgeSet" resultMap="MapEdgeSetResult">
+        <include refid="selectMapEdgeSetVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="relevantSystem != null  and relevantSystem != ''"> and relevant_system = #{relevantSystem}</if>
+            <if test="releaseMenu != null  and releaseMenu != ''"> and release_menu = #{releaseMenu}</if>
+            <if test="relevantOrganization != null  and relevantOrganization != ''"> and relevant_organization = #{relevantOrganization}</if>
+            <if test="detail != null  and detail != ''"> and detail = #{detail}</if>
+            <if test="zhuang != null  and zhuang != ''"> and zhuang = #{zhuang}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectMapEdgeSetById" parameterType="Long" resultMap="MapEdgeSetResult">
+        <include refid="selectMapEdgeSetVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertMapEdgeSet" parameterType="MapEdgeSet" useGeneratedKeys="true" keyProperty="id">
+        insert into map_edge_set
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="relevantSystem != null">relevant_system,</if>
+            <if test="releaseMenu != null">release_menu,</if>
+            <if test="relevantOrganization != null">relevant_organization,</if>
+            <if test="detail != null">detail,</if>
+            <if test="zhuang != null">zhuang,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="relevantSystem != null">#{relevantSystem},</if>
+            <if test="releaseMenu != null">#{releaseMenu},</if>
+            <if test="relevantOrganization != null">#{relevantOrganization},</if>
+            <if test="detail != null">#{detail},</if>
+            <if test="zhuang != null">#{zhuang},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMapEdgeSet" parameterType="MapEdgeSet">
+        update map_edge_set
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="relevantSystem != null">relevant_system = #{relevantSystem},</if>
+            <if test="releaseMenu != null">release_menu = #{releaseMenu},</if>
+            <if test="relevantOrganization != null">relevant_organization = #{relevantOrganization},</if>
+            <if test="detail != null">detail = #{detail},</if>
+            <if test="zhuang != null">zhuang = #{zhuang},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMapEdgeSetById" parameterType="Long">
+        delete from map_edge_set where id = #{id}
+    </delete>
+
+    <delete id="deleteMapEdgeSetByIds" parameterType="String">
+        delete from map_edge_set where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

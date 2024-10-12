@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.SoilHealthStandardLibraryMapper">
+    
+    <resultMap type="SoilHealthStandardLibrary" id="SoilHealthStandardLibraryResult">
+        <result property="id"    column="id"    />
+        <result property="bid"    column="bid"    />
+        <result property="name"    column="name"    />
+        <result property="publishTime"    column="publish_time"    />
+        <result property="implementationTime"    column="implementation_time"    />
+        <result property="soilStyle"    column="soil_style"    />
+        <result property="soilTexture"    column="soil_texture"    />
+        <result property="detail"    column="detail"    />
+        <result property="soilStatus"    column="soil_status"    />
+    </resultMap>
+
+    <sql id="selectSoilHealthStandardLibraryVo">
+        select id, bid, name, publish_time, implementation_time, soil_style, soil_texture, detail, soil_status from soil_health_standard_library
+    </sql>
+
+    <select id="selectSoilHealthStandardLibraryList" parameterType="SoilHealthStandardLibrary" resultMap="SoilHealthStandardLibraryResult">
+        <include refid="selectSoilHealthStandardLibraryVo"/>
+        <where>  
+            <if test="bid != null  and bid != ''"> and bid = #{bid}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="publishTime != null "> and publish_time = #{publishTime}</if>
+            <if test="implementationTime != null "> and implementation_time = #{implementationTime}</if>
+            <if test="soilStyle != null  and soilStyle != ''"> and soil_style = #{soilStyle}</if>
+            <if test="soilTexture != null  and soilTexture != ''"> and soil_texture = #{soilTexture}</if>
+            <if test="detail != null  and detail != ''"> and detail = #{detail}</if>
+            <if test="soilStatus != null  and soilStatus != ''"> and soil_status = #{soilStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectSoilHealthStandardLibraryById" parameterType="Long" resultMap="SoilHealthStandardLibraryResult">
+        <include refid="selectSoilHealthStandardLibraryVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSoilHealthStandardLibrary" parameterType="SoilHealthStandardLibrary" useGeneratedKeys="true" keyProperty="id">
+        insert into soil_health_standard_library
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bid != null">bid,</if>
+            <if test="name != null">name,</if>
+            <if test="publishTime != null">publish_time,</if>
+            <if test="implementationTime != null">implementation_time,</if>
+            <if test="soilStyle != null">soil_style,</if>
+            <if test="soilTexture != null">soil_texture,</if>
+            <if test="detail != null">detail,</if>
+            <if test="soilStatus != null">soil_status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bid != null">#{bid},</if>
+            <if test="name != null">#{name},</if>
+            <if test="publishTime != null">#{publishTime},</if>
+            <if test="implementationTime != null">#{implementationTime},</if>
+            <if test="soilStyle != null">#{soilStyle},</if>
+            <if test="soilTexture != null">#{soilTexture},</if>
+            <if test="detail != null">#{detail},</if>
+            <if test="soilStatus != null">#{soilStatus},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSoilHealthStandardLibrary" parameterType="SoilHealthStandardLibrary">
+        update soil_health_standard_library
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bid != null">bid = #{bid},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="publishTime != null">publish_time = #{publishTime},</if>
+            <if test="implementationTime != null">implementation_time = #{implementationTime},</if>
+            <if test="soilStyle != null">soil_style = #{soilStyle},</if>
+            <if test="soilTexture != null">soil_texture = #{soilTexture},</if>
+            <if test="detail != null">detail = #{detail},</if>
+            <if test="soilStatus != null">soil_status = #{soilStatus},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSoilHealthStandardLibraryById" parameterType="Long">
+        delete from soil_health_standard_library where id = #{id}
+    </delete>
+
+    <delete id="deleteSoilHealthStandardLibraryByIds" parameterType="String">
+        delete from soil_health_standard_library where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

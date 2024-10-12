@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.FacilityClassifyManageMapper">
+    
+    <resultMap type="FacilityClassifyManage" id="FacilityClassifyManageResult">
+        <result property="id"    column="id"    />
+        <result property="classifyId"    column="classify_id"    />
+        <result property="classifyName"    column="classify_name"    />
+        <result property="classifyIcon"    column="classify_icon"    />
+        <result property="classifyPhoto"    column="classify_photo"    />
+        <result property="fSort"    column="f_sort"    />
+        <result property="fSet"    column="f_set"    />
+        <result property="zhuang"    column="zhuang"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectFacilityClassifyManageVo">
+        select id, classify_id, classify_name, classify_icon, classify_photo, f_sort, f_set, zhuang, create_time from facility_classify_manage
+    </sql>
+
+    <select id="selectFacilityClassifyManageList" parameterType="FacilityClassifyManage" resultMap="FacilityClassifyManageResult">
+        <include refid="selectFacilityClassifyManageVo"/>
+        <where>  
+            <if test="classifyId != null "> and classify_id = #{classifyId}</if>
+            <if test="classifyName != null  and classifyName != ''"> and classify_name like concat('%', #{classifyName}, '%')</if>
+            <if test="classifyIcon != null  and classifyIcon != ''"> and classify_icon = #{classifyIcon}</if>
+            <if test="classifyPhoto != null  and classifyPhoto != ''"> and classify_photo = #{classifyPhoto}</if>
+            <if test="fSort != null  and fSort != ''"> and f_sort = #{fSort}</if>
+            <if test="fSet != null  and fSet != ''"> and f_set = #{fSet}</if>
+            <if test="zhuang != null  and zhuang != ''"> and zhuang = #{zhuang}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectFacilityClassifyManageById" parameterType="Long" resultMap="FacilityClassifyManageResult">
+        <include refid="selectFacilityClassifyManageVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertFacilityClassifyManage" parameterType="FacilityClassifyManage" useGeneratedKeys="true" keyProperty="id">
+        insert into facility_classify_manage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="classifyId != null">classify_id,</if>
+            <if test="classifyName != null">classify_name,</if>
+            <if test="classifyIcon != null">classify_icon,</if>
+            <if test="classifyPhoto != null">classify_photo,</if>
+            <if test="fSort != null">f_sort,</if>
+            <if test="fSet != null">f_set,</if>
+            <if test="zhuang != null">zhuang,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="classifyId != null">#{classifyId},</if>
+            <if test="classifyName != null">#{classifyName},</if>
+            <if test="classifyIcon != null">#{classifyIcon},</if>
+            <if test="classifyPhoto != null">#{classifyPhoto},</if>
+            <if test="fSort != null">#{fSort},</if>
+            <if test="fSet != null">#{fSet},</if>
+            <if test="zhuang != null">#{zhuang},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFacilityClassifyManage" parameterType="FacilityClassifyManage">
+        update facility_classify_manage
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="classifyId != null">classify_id = #{classifyId},</if>
+            <if test="classifyName != null">classify_name = #{classifyName},</if>
+            <if test="classifyIcon != null">classify_icon = #{classifyIcon},</if>
+            <if test="classifyPhoto != null">classify_photo = #{classifyPhoto},</if>
+            <if test="fSort != null">f_sort = #{fSort},</if>
+            <if test="fSet != null">f_set = #{fSet},</if>
+            <if test="zhuang != null">zhuang = #{zhuang},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFacilityClassifyManageById" parameterType="Long">
+        delete from facility_classify_manage where id = #{id}
+    </delete>
+
+    <delete id="deleteFacilityClassifyManageByIds" parameterType="String">
+        delete from facility_classify_manage where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.GeneralDataSetMapper">
+    
+    <resultMap type="GeneralDataSet" id="GeneralDataSetResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="organization"    column="organization"    />
+        <result property="dataYear"    column="data_year"    />
+        <result property="dataMonth"    column="data_month"    />
+        <result property="releaseOption"    column="release_option"    />
+        <result property="condition"    column="condition"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectGeneralDataSetVo">
+        select id, name, organization, data_year, data_month, release_option, condition, update_time, create_time from general_data_set
+    </sql>
+
+    <select id="selectGeneralDataSetList" parameterType="GeneralDataSet" resultMap="GeneralDataSetResult">
+        <include refid="selectGeneralDataSetVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="organization != null  and organization != ''"> and organization = #{organization}</if>
+            <if test="dataYear != null  and dataYear != ''"> and data_year = #{dataYear}</if>
+            <if test="dataMonth != null  and dataMonth != ''"> and data_month = #{dataMonth}</if>
+            <if test="releaseOption != null  and releaseOption != ''"> and release_option = #{releaseOption}</if>
+            <if test="condition != null  and condition != ''"> and condition = #{condition}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectGeneralDataSetById" parameterType="Long" resultMap="GeneralDataSetResult">
+        <include refid="selectGeneralDataSetVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertGeneralDataSet" parameterType="GeneralDataSet" useGeneratedKeys="true" keyProperty="id">
+        insert into general_data_set
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="organization != null">organization,</if>
+            <if test="dataYear != null">data_year,</if>
+            <if test="dataMonth != null">data_month,</if>
+            <if test="releaseOption != null">release_option,</if>
+            <if test="condition != null">condition,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="organization != null">#{organization},</if>
+            <if test="dataYear != null">#{dataYear},</if>
+            <if test="dataMonth != null">#{dataMonth},</if>
+            <if test="releaseOption != null">#{releaseOption},</if>
+            <if test="condition != null">#{condition},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGeneralDataSet" parameterType="GeneralDataSet">
+        update general_data_set
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="organization != null">organization = #{organization},</if>
+            <if test="dataYear != null">data_year = #{dataYear},</if>
+            <if test="dataMonth != null">data_month = #{dataMonth},</if>
+            <if test="releaseOption != null">release_option = #{releaseOption},</if>
+            <if test="condition != null">condition = #{condition},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGeneralDataSetById" parameterType="Long">
+        delete from general_data_set where id = #{id}
+    </delete>
+
+    <delete id="deleteGeneralDataSetByIds" parameterType="String">
+        delete from general_data_set where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.DataClassifyManageMapper">
+    
+    <resultMap type="DataClassifyManage" id="DataClassifyManageResult">
+        <result property="id"    column="id"    />
+        <result property="classificationName"    column="classification_name"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectDataClassifyManageVo">
+        select id, classification_name, create_time from data_classify_manage
+    </sql>
+
+    <select id="selectDataClassifyManageList" parameterType="DataClassifyManage" resultMap="DataClassifyManageResult">
+        <include refid="selectDataClassifyManageVo"/>
+        <where>  
+            <if test="classificationName != null  and classificationName != ''"> and classification_name like concat('%', #{classificationName}, '%')</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectDataClassifyManageById" parameterType="Long" resultMap="DataClassifyManageResult">
+        <include refid="selectDataClassifyManageVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertDataClassifyManage" parameterType="DataClassifyManage" useGeneratedKeys="true" keyProperty="id">
+        insert into data_classify_manage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="classificationName != null">classification_name,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="classificationName != null">#{classificationName},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDataClassifyManage" parameterType="DataClassifyManage">
+        update data_classify_manage
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="classificationName != null">classification_name = #{classificationName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDataClassifyManageById" parameterType="Long">
+        delete from data_classify_manage where id = #{id}
+    </delete>
+
+    <delete id="deleteDataClassifyManageByIds" parameterType="String">
+        delete from data_classify_manage where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

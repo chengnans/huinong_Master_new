@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.CultureMapper">
+    
+    <resultMap type="Culture" id="CultureResult">
+        <result property="id"    column="id"    />
+        <result property="organization"    column="organization"    />
+        <result property="primaryClassify"    column="primary_classify"    />
+        <result property="secondaryClassify"    column="secondary_classify"    />
+        <result property="mainTitle"    column="main_title"    />
+        <result property="secondaryTitle"    column="secondary_title"    />
+        <result property="isShow"    column="is_show"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCultureVo">
+        select id, organization, primary_classify, secondary_classify, main_title, secondary_title, is_show, create_time, update_time from culture
+    </sql>
+
+    <select id="selectCultureList" parameterType="Culture" resultMap="CultureResult">
+        <include refid="selectCultureVo"/>
+        <where>  
+            <if test="organization != null  and organization != ''"> and organization = #{organization}</if>
+            <if test="primaryClassify != null  and primaryClassify != ''"> and primary_classify = #{primaryClassify}</if>
+            <if test="secondaryClassify != null  and secondaryClassify != ''"> and secondary_classify = #{secondaryClassify}</if>
+            <if test="mainTitle != null  and mainTitle != ''"> and main_title = #{mainTitle}</if>
+            <if test="secondaryTitle != null  and secondaryTitle != ''"> and secondary_title = #{secondaryTitle}</if>
+            <if test="isShow != null  and isShow != ''"> and is_show = #{isShow}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectCultureById" parameterType="Long" resultMap="CultureResult">
+        <include refid="selectCultureVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCulture" parameterType="Culture" useGeneratedKeys="true" keyProperty="id">
+        insert into culture
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="organization != null">organization,</if>
+            <if test="primaryClassify != null">primary_classify,</if>
+            <if test="secondaryClassify != null">secondary_classify,</if>
+            <if test="mainTitle != null">main_title,</if>
+            <if test="secondaryTitle != null">secondary_title,</if>
+            <if test="isShow != null">is_show,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="organization != null">#{organization},</if>
+            <if test="primaryClassify != null">#{primaryClassify},</if>
+            <if test="secondaryClassify != null">#{secondaryClassify},</if>
+            <if test="mainTitle != null">#{mainTitle},</if>
+            <if test="secondaryTitle != null">#{secondaryTitle},</if>
+            <if test="isShow != null">#{isShow},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCulture" parameterType="Culture">
+        update culture
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="organization != null">organization = #{organization},</if>
+            <if test="primaryClassify != null">primary_classify = #{primaryClassify},</if>
+            <if test="secondaryClassify != null">secondary_classify = #{secondaryClassify},</if>
+            <if test="mainTitle != null">main_title = #{mainTitle},</if>
+            <if test="secondaryTitle != null">secondary_title = #{secondaryTitle},</if>
+            <if test="isShow != null">is_show = #{isShow},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCultureById" parameterType="Long">
+        delete from culture where id = #{id}
+    </delete>
+
+    <delete id="deleteCultureByIds" parameterType="String">
+        delete from culture where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

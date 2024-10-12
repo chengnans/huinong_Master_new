@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.MapIconSetMapper">
+
+    <resultMap type="MapIconSet" id="MapIconSetResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="iconStyle"    column="icon_style"    />
+        <result property="optionStyle"    column="option_style"    />
+        <result property="relevantSystem"    column="relevant_system"    />
+        <result property="relevantOrganization"    column="relevant_organization"    />
+        <result property="detail"    column="detail"    />
+        <result property="releaseMenu"    column="release_menu"    />
+        <result property="condition"    column="condition"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectMapIconSetVo">
+        select id, name, icon_style, option_style, relevant_system, relevant_organization, detail, release_menu, `condition`, create_time, update_time from map_icon_set
+    </sql>
+
+    <select id="selectMapIconSetList" parameterType="MapIconSet" resultMap="MapIconSetResult">
+        <include refid="selectMapIconSetVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="iconStyle != null  and iconStyle != ''"> and icon_style = #{iconStyle}</if>
+            <if test="optionStyle != null  and optionStyle != ''"> and option_style = #{optionStyle}</if>
+            <if test="relevantSystem != null  and relevantSystem != ''"> and relevant_system = #{relevantSystem}</if>
+            <if test="relevantOrganization != null  and relevantOrganization != ''"> and relevant_organization = #{relevantOrganization}</if>
+            <if test="detail != null  and detail != ''"> and detail = #{detail}</if>
+            <if test="releaseMenu != null  and releaseMenu != ''"> and release_menu = #{releaseMenu}</if>
+            <if test="condition != null  and condition != ''"> and condition = #{condition}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
+        </where>
+    </select>
+
+    <select id="selectMapIconSetById" parameterType="Long" resultMap="MapIconSetResult">
+        <include refid="selectMapIconSetVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertMapIconSet" parameterType="MapIconSet" useGeneratedKeys="true" keyProperty="id">
+        insert into map_icon_set
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="iconStyle != null">icon_style,</if>
+            <if test="optionStyle != null">option_style,</if>
+            <if test="relevantSystem != null">relevant_system,</if>
+            <if test="relevantOrganization != null">relevant_organization,</if>
+            <if test="detail != null">detail,</if>
+            <if test="releaseMenu != null">release_menu,</if>
+            <if test="`condition` != null">condition,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="iconStyle != null">#{iconStyle},</if>
+            <if test="optionStyle != null">#{optionStyle},</if>
+            <if test="relevantSystem != null">#{relevantSystem},</if>
+            <if test="relevantOrganization != null">#{relevantOrganization},</if>
+            <if test="detail != null">#{detail},</if>
+            <if test="releaseMenu != null">#{releaseMenu},</if>
+            <if test="condition != null">#{condition},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMapIconSet" parameterType="MapIconSet">
+        update map_icon_set
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="iconStyle != null">icon_style = #{iconStyle},</if>
+            <if test="optionStyle != null">option_style = #{optionStyle},</if>
+            <if test="relevantSystem != null">relevant_system = #{relevantSystem},</if>
+            <if test="relevantOrganization != null">relevant_organization = #{relevantOrganization},</if>
+            <if test="detail != null">detail = #{detail},</if>
+            <if test="releaseMenu != null">release_menu = #{releaseMenu},</if>
+            <if test="condition != null">condition = #{condition},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMapIconSetById" parameterType="Long">
+        delete from map_icon_set where id = #{id}
+    </delete>
+
+    <delete id="deleteMapIconSetByIds" parameterType="String">
+        delete from map_icon_set where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

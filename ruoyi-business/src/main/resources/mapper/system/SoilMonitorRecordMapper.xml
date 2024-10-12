@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.SoilMonitorRecordMapper">
+    
+    <resultMap type="SoilMonitorRecord" id="SoilMonitorRecordResult">
+        <result property="id"    column="id"    />
+        <result property="reportId"    column="report_id"    />
+        <result property="sampleId"    column="sample_id"    />
+        <result property="samplingDate"    column="sampling_date"    />
+        <result property="samplingAddress"    column="sampling_address"    />
+        <result property="analysisDate"    column="analysis_date"    />
+        <result property="village"    column="village"    />
+        <result property="baseland"    column="baseland"    />
+        <result property="plot"    column="plot"    />
+        <result property="pH"    column="pH"    />
+        <result property="heavyMetal"    column="heavy_metal"    />
+        <result property="pesticidePollution"    column="pesticide_pollution"    />
+    </resultMap>
+
+    <sql id="selectSoilMonitorRecordVo">
+        select id, report_id, sample_id, sampling_date, sampling_address, analysis_date, village, baseland, plot, pH, heavy_metal, pesticide_pollution from soil_monitor_record
+    </sql>
+
+    <select id="selectSoilMonitorRecordList" parameterType="SoilMonitorRecord" resultMap="SoilMonitorRecordResult">
+        <include refid="selectSoilMonitorRecordVo"/>
+        <where>  
+            <if test="reportId != null  and reportId != ''"> and report_id = #{reportId}</if>
+            <if test="sampleId != null  and sampleId != ''"> and sample_id = #{sampleId}</if>
+            <if test="samplingDate != null "> and sampling_date = #{samplingDate}</if>
+            <if test="samplingAddress != null  and samplingAddress != ''"> and sampling_address = #{samplingAddress}</if>
+            <if test="analysisDate != null "> and analysis_date = #{analysisDate}</if>
+            <if test="village != null  and village != ''"> and village = #{village}</if>
+            <if test="baseland != null  and baseland != ''"> and baseland = #{baseland}</if>
+            <if test="plot != null  and plot != ''"> and plot = #{plot}</if>
+            <if test="pH != null  and pH != ''"> and pH = #{pH}</if>
+            <if test="heavyMetal != null  and heavyMetal != ''"> and heavy_metal = #{heavyMetal}</if>
+            <if test="pesticidePollution != null  and pesticidePollution != ''"> and pesticide_pollution = #{pesticidePollution}</if>
+        </where>
+    </select>
+    
+    <select id="selectSoilMonitorRecordById" parameterType="Long" resultMap="SoilMonitorRecordResult">
+        <include refid="selectSoilMonitorRecordVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSoilMonitorRecord" parameterType="SoilMonitorRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into soil_monitor_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="reportId != null">report_id,</if>
+            <if test="sampleId != null">sample_id,</if>
+            <if test="samplingDate != null">sampling_date,</if>
+            <if test="samplingAddress != null">sampling_address,</if>
+            <if test="analysisDate != null">analysis_date,</if>
+            <if test="village != null">village,</if>
+            <if test="baseland != null">baseland,</if>
+            <if test="plot != null">plot,</if>
+            <if test="pH != null">pH,</if>
+            <if test="heavyMetal != null">heavy_metal,</if>
+            <if test="pesticidePollution != null">pesticide_pollution,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="reportId != null">#{reportId},</if>
+            <if test="sampleId != null">#{sampleId},</if>
+            <if test="samplingDate != null">#{samplingDate},</if>
+            <if test="samplingAddress != null">#{samplingAddress},</if>
+            <if test="analysisDate != null">#{analysisDate},</if>
+            <if test="village != null">#{village},</if>
+            <if test="baseland != null">#{baseland},</if>
+            <if test="plot != null">#{plot},</if>
+            <if test="pH != null">#{pH},</if>
+            <if test="heavyMetal != null">#{heavyMetal},</if>
+            <if test="pesticidePollution != null">#{pesticidePollution},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSoilMonitorRecord" parameterType="SoilMonitorRecord">
+        update soil_monitor_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="reportId != null">report_id = #{reportId},</if>
+            <if test="sampleId != null">sample_id = #{sampleId},</if>
+            <if test="samplingDate != null">sampling_date = #{samplingDate},</if>
+            <if test="samplingAddress != null">sampling_address = #{samplingAddress},</if>
+            <if test="analysisDate != null">analysis_date = #{analysisDate},</if>
+            <if test="village != null">village = #{village},</if>
+            <if test="baseland != null">baseland = #{baseland},</if>
+            <if test="plot != null">plot = #{plot},</if>
+            <if test="pH != null">pH = #{pH},</if>
+            <if test="heavyMetal != null">heavy_metal = #{heavyMetal},</if>
+            <if test="pesticidePollution != null">pesticide_pollution = #{pesticidePollution},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSoilMonitorRecordById" parameterType="Long">
+        delete from soil_monitor_record where id = #{id}
+    </delete>
+
+    <delete id="deleteSoilMonitorRecordByIds" parameterType="String">
+        delete from soil_monitor_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

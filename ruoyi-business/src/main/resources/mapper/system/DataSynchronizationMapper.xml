@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.DataSynchronizationMapper">
+    
+    <resultMap type="DataSynchronization" id="DataSynchronizationResult">
+        <result property="id"    column="id"    />
+        <result property="bid"    column="bid"    />
+        <result property="taskName"    column="task_name"    />
+        <result property="dataSourceName"    column="data_source_name"    />
+        <result property="interfaceClassName"    column="interface_class_name"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectDataSynchronizationVo">
+        select id, bid, task_name, data_source_name, interface_class_name, create_time from data_synchronization
+    </sql>
+
+    <select id="selectDataSynchronizationList" parameterType="DataSynchronization" resultMap="DataSynchronizationResult">
+        <include refid="selectDataSynchronizationVo"/>
+        <where>  
+            <if test="bid != null  and bid != ''"> and bid = #{bid}</if>
+            <if test="taskName != null  and taskName != ''"> and task_name like concat('%', #{taskName}, '%')</if>
+            <if test="dataSourceName != null  and dataSourceName != ''"> and data_source_name like concat('%', #{dataSourceName}, '%')</if>
+            <if test="interfaceClassName != null  and interfaceClassName != ''"> and interface_class_name like concat('%', #{interfaceClassName}, '%')</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectDataSynchronizationById" parameterType="Long" resultMap="DataSynchronizationResult">
+        <include refid="selectDataSynchronizationVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertDataSynchronization" parameterType="DataSynchronization" useGeneratedKeys="true" keyProperty="id">
+        insert into data_synchronization
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bid != null">bid,</if>
+            <if test="taskName != null">task_name,</if>
+            <if test="dataSourceName != null">data_source_name,</if>
+            <if test="interfaceClassName != null">interface_class_name,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="bid != null">#{bid},</if>
+            <if test="taskName != null">#{taskName},</if>
+            <if test="dataSourceName != null">#{dataSourceName},</if>
+            <if test="interfaceClassName != null">#{interfaceClassName},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDataSynchronization" parameterType="DataSynchronization">
+        update data_synchronization
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="bid != null">bid = #{bid},</if>
+            <if test="taskName != null">task_name = #{taskName},</if>
+            <if test="dataSourceName != null">data_source_name = #{dataSourceName},</if>
+            <if test="interfaceClassName != null">interface_class_name = #{interfaceClassName},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDataSynchronizationById" parameterType="Long">
+        delete from data_synchronization where id = #{id}
+    </delete>
+
+    <delete id="deleteDataSynchronizationByIds" parameterType="String">
+        delete from data_synchronization where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

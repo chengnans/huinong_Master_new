@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.IndustrialPriceMapper">
+    
+    <resultMap type="IndustrialPrice" id="IndustrialPriceResult">
+        <result property="id"    column="id"    />
+        <result property="time"    column="time"    />
+        <result property="interfaceClassName"    column="interface_class_name"    />
+        <result property="producingArea"    column="producing_area"    />
+        <result property="price"    column="price"    />
+        <result property="adjustPrice"    column="adjust_price"    />
+        <result property="localClassName"    column="local_class_name"    />
+        <result property="dataSourceName"    column="data_source_name"    />
+        <result property="platformName"    column="platform_name"    />
+        <result property="applicationName"    column="application_name"    />
+        <result property="creator"    column="creator"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectIndustrialPriceVo">
+        select id, time, interface_class_name, producing_area, price, adjust_price, local_class_name, data_source_name, platform_name, application_name, creator, create_time from industrial_price
+    </sql>
+
+    <select id="selectIndustrialPriceList" parameterType="IndustrialPrice" resultMap="IndustrialPriceResult">
+        <include refid="selectIndustrialPriceVo"/>
+        <where>  
+            <if test="time != null "> and time = #{time}</if>
+            <if test="interfaceClassName != null  and interfaceClassName != ''"> and interface_class_name like concat('%', #{interfaceClassName}, '%')</if>
+            <if test="producingArea != null  and producingArea != ''"> and producing_area = #{producingArea}</if>
+            <if test="price != null  and price != ''"> and price = #{price}</if>
+            <if test="adjustPrice != null  and adjustPrice != ''"> and adjust_price = #{adjustPrice}</if>
+            <if test="localClassName != null  and localClassName != ''"> and local_class_name like concat('%', #{localClassName}, '%')</if>
+            <if test="dataSourceName != null  and dataSourceName != ''"> and data_source_name like concat('%', #{dataSourceName}, '%')</if>
+            <if test="platformName != null  and platformName != ''"> and platform_name like concat('%', #{platformName}, '%')</if>
+            <if test="applicationName != null  and applicationName != ''"> and application_name like concat('%', #{applicationName}, '%')</if>
+            <if test="creator != null  and creator != ''"> and creator = #{creator}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectIndustrialPriceById" parameterType="Long" resultMap="IndustrialPriceResult">
+        <include refid="selectIndustrialPriceVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertIndustrialPrice" parameterType="IndustrialPrice" useGeneratedKeys="true" keyProperty="id">
+        insert into industrial_price
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="time != null">time,</if>
+            <if test="interfaceClassName != null">interface_class_name,</if>
+            <if test="producingArea != null">producing_area,</if>
+            <if test="price != null">price,</if>
+            <if test="adjustPrice != null">adjust_price,</if>
+            <if test="localClassName != null">local_class_name,</if>
+            <if test="dataSourceName != null">data_source_name,</if>
+            <if test="platformName != null">platform_name,</if>
+            <if test="applicationName != null">application_name,</if>
+            <if test="creator != null">creator,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="time != null">#{time},</if>
+            <if test="interfaceClassName != null">#{interfaceClassName},</if>
+            <if test="producingArea != null">#{producingArea},</if>
+            <if test="price != null">#{price},</if>
+            <if test="adjustPrice != null">#{adjustPrice},</if>
+            <if test="localClassName != null">#{localClassName},</if>
+            <if test="dataSourceName != null">#{dataSourceName},</if>
+            <if test="platformName != null">#{platformName},</if>
+            <if test="applicationName != null">#{applicationName},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateIndustrialPrice" parameterType="IndustrialPrice">
+        update industrial_price
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="time != null">time = #{time},</if>
+            <if test="interfaceClassName != null">interface_class_name = #{interfaceClassName},</if>
+            <if test="producingArea != null">producing_area = #{producingArea},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="adjustPrice != null">adjust_price = #{adjustPrice},</if>
+            <if test="localClassName != null">local_class_name = #{localClassName},</if>
+            <if test="dataSourceName != null">data_source_name = #{dataSourceName},</if>
+            <if test="platformName != null">platform_name = #{platformName},</if>
+            <if test="applicationName != null">application_name = #{applicationName},</if>
+            <if test="creator != null">creator = #{creator},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteIndustrialPriceById" parameterType="Long">
+        delete from industrial_price where id = #{id}
+    </delete>
+
+    <delete id="deleteIndustrialPriceByIds" parameterType="String">
+        delete from industrial_price where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

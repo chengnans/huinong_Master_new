@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.FacilityListMapper">
+    
+    <resultMap type="FacilityList" id="FacilityListResult">
+        <result property="id"    column="id"    />
+        <result property="systemId"    column="system_id"    />
+        <result property="facilityId"    column="facility_id"    />
+        <result property="facilityName"    column="facility_name"    />
+        <result property="facilityType"    column="facility_type"    />
+        <result property="facilityLong"    column="facility_long"    />
+        <result property="facilityWidth"    column="facility_width"    />
+        <result property="facilityTall"    column="facility_tall"    />
+        <result property="detail"    column="detail"    />
+        <result property="organizationName"    column="organization_name"    />
+        <result property="monitor"    column="monitor"    />
+        <result property="phone"    column="phone"    />
+        <result property="contact"    column="contact"    />
+        <result property="operator"    column="operator"    />
+        <result property="operatingTime"    column="operating_time"    />
+    </resultMap>
+
+    <sql id="selectFacilityListVo">
+        select id, system_id, facility_id, facility_name, facility_type, facility_long, facility_width, facility_tall, detail, organization_name, monitor, phone, contact, operator, operating_time from facility_list
+    </sql>
+
+    <select id="selectFacilityListList" parameterType="FacilityList" resultMap="FacilityListResult">
+        <include refid="selectFacilityListVo"/>
+        <where>  
+            <if test="systemId != null  and systemId != ''"> and system_id = #{systemId}</if>
+            <if test="facilityId != null  and facilityId != ''"> and facility_id = #{facilityId}</if>
+            <if test="facilityName != null  and facilityName != ''"> and facility_name like concat('%', #{facilityName}, '%')</if>
+            <if test="facilityType != null  and facilityType != ''"> and facility_type = #{facilityType}</if>
+            <if test="facilityLong != null "> and facility_long = #{facilityLong}</if>
+            <if test="facilityWidth != null "> and facility_width = #{facilityWidth}</if>
+            <if test="facilityTall != null "> and facility_tall = #{facilityTall}</if>
+            <if test="detail != null  and detail != ''"> and detail = #{detail}</if>
+            <if test="organizationName != null  and organizationName != ''"> and organization_name like concat('%', #{organizationName}, '%')</if>
+            <if test="monitor != null  and monitor != ''"> and monitor = #{monitor}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="contact != null  and contact != ''"> and contact = #{contact}</if>
+            <if test="operator != null  and operator != ''"> and operator = #{operator}</if>
+            <if test="operatingTime != null "> and operating_time = #{operatingTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectFacilityListById" parameterType="Long" resultMap="FacilityListResult">
+        <include refid="selectFacilityListVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertFacilityList" parameterType="FacilityList" useGeneratedKeys="true" keyProperty="id">
+        insert into facility_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="systemId != null">system_id,</if>
+            <if test="facilityId != null">facility_id,</if>
+            <if test="facilityName != null">facility_name,</if>
+            <if test="facilityType != null">facility_type,</if>
+            <if test="facilityLong != null">facility_long,</if>
+            <if test="facilityWidth != null">facility_width,</if>
+            <if test="facilityTall != null">facility_tall,</if>
+            <if test="detail != null">detail,</if>
+            <if test="organizationName != null">organization_name,</if>
+            <if test="monitor != null">monitor,</if>
+            <if test="phone != null">phone,</if>
+            <if test="contact != null">contact,</if>
+            <if test="operator != null">operator,</if>
+            <if test="operatingTime != null">operating_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="systemId != null">#{systemId},</if>
+            <if test="facilityId != null">#{facilityId},</if>
+            <if test="facilityName != null">#{facilityName},</if>
+            <if test="facilityType != null">#{facilityType},</if>
+            <if test="facilityLong != null">#{facilityLong},</if>
+            <if test="facilityWidth != null">#{facilityWidth},</if>
+            <if test="facilityTall != null">#{facilityTall},</if>
+            <if test="detail != null">#{detail},</if>
+            <if test="organizationName != null">#{organizationName},</if>
+            <if test="monitor != null">#{monitor},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="contact != null">#{contact},</if>
+            <if test="operator != null">#{operator},</if>
+            <if test="operatingTime != null">#{operatingTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFacilityList" parameterType="FacilityList">
+        update facility_list
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="systemId != null">system_id = #{systemId},</if>
+            <if test="facilityId != null">facility_id = #{facilityId},</if>
+            <if test="facilityName != null">facility_name = #{facilityName},</if>
+            <if test="facilityType != null">facility_type = #{facilityType},</if>
+            <if test="facilityLong != null">facility_long = #{facilityLong},</if>
+            <if test="facilityWidth != null">facility_width = #{facilityWidth},</if>
+            <if test="facilityTall != null">facility_tall = #{facilityTall},</if>
+            <if test="detail != null">detail = #{detail},</if>
+            <if test="organizationName != null">organization_name = #{organizationName},</if>
+            <if test="monitor != null">monitor = #{monitor},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="contact != null">contact = #{contact},</if>
+            <if test="operator != null">operator = #{operator},</if>
+            <if test="operatingTime != null">operating_time = #{operatingTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFacilityListById" parameterType="Long">
+        delete from facility_list where id = #{id}
+    </delete>
+
+    <delete id="deleteFacilityListByIds" parameterType="String">
+        delete from facility_list where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
