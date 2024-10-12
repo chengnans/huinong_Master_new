@@ -1,13 +1,16 @@
 package com.cheng.system.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
+import java.util.Date;
+
 /**
  * 产业企业对象 enterprise
- * 
+ *
  * @author cheng
  * @date 2024-10-12
  */
@@ -38,61 +41,90 @@ public class Enterprise extends BaseEntity
     @Excel(name = "是否显示")
     private String isShow;
 
-    public void setId(Long id) 
+    /** 创建时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
+
+    /** 更新时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    private Date updateTime;
+
+    public void setId(Long id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public Long getId()
     {
         return id;
     }
-    public void setOrganization(String organization) 
+    public void setOrganization(String organization)
     {
         this.organization = organization;
     }
 
-    public String getOrganization() 
+    public String getOrganization()
     {
         return organization;
     }
-    public void setPrimaryClassify(String primaryClassify) 
+    public void setPrimaryClassify(String primaryClassify)
     {
         this.primaryClassify = primaryClassify;
     }
 
-    public String getPrimaryClassify() 
+    public String getPrimaryClassify()
     {
         return primaryClassify;
     }
-    public void setShortName(String shortName) 
+    public void setShortName(String shortName)
     {
         this.shortName = shortName;
     }
 
-    public String getShortName() 
+    public String getShortName()
     {
         return shortName;
     }
-    public void setIntro(String intro) 
+    public void setIntro(String intro)
     {
         this.intro = intro;
     }
 
-    public String getIntro() 
+    public String getIntro()
     {
         return intro;
     }
-    public void setIsShow(String isShow) 
+    public void setIsShow(String isShow)
     {
         this.isShow = isShow;
     }
 
-    public String getIsShow() 
+    public String getIsShow()
     {
         return isShow;
     }
 
+    public Date getCreateTime()
+    {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime)
+    {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime()
+    {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime)
+    {
+        this.updateTime = updateTime;
+    }
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
