@@ -10,13 +10,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="primaryClassify"    column="primary_classify"    />
         <result property="shortName"    column="short_name"    />
         <result property="intro"    column="intro"    />
-        <result property="show"    column="show"    />
+        <result property="isShow"    column="is_show"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
     </resultMap>
 
     <sql id="selectEnterpriseVo">
-        select id, organization, primary_classify, short_name, intro, show, create_time, update_time from enterprise
+        select id, organization, primary_classify, short_name, intro, is_show, create_time, update_time from enterprise
     </sql>
 
     <select id="selectEnterpriseList" parameterType="Enterprise" resultMap="EnterpriseResult">
@@ -26,7 +26,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="primaryClassify != null  and primaryClassify != ''"> and primary_classify = #{primaryClassify}</if>
             <if test="shortName != null  and shortName != ''"> and short_name like concat('%', #{shortName}, '%')</if>
             <if test="intro != null  and intro != ''"> and intro = #{intro}</if>
-            <if test="show != null  and show != ''"> and show = #{show}</if>
+            <if test="isShow != null  and isShow != ''"> and is_show = #{isShow}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="updateTime != null "> and update_time = #{updateTime}</if>
         </where>
     </select>
     
@@ -42,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="primaryClassify != null">primary_classify,</if>
             <if test="shortName != null">short_name,</if>
             <if test="intro != null">intro,</if>
-            <if test="show != null">show,</if>
+            <if test="isShow != null">is_show,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
          </trim>
@@ -51,7 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="primaryClassify != null">#{primaryClassify},</if>
             <if test="shortName != null">#{shortName},</if>
             <if test="intro != null">#{intro},</if>
-            <if test="show != null">#{show},</if>
+            <if test="isShow != null">#{isShow},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
          </trim>
@@ -64,7 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="primaryClassify != null">primary_classify = #{primaryClassify},</if>
             <if test="shortName != null">short_name = #{shortName},</if>
             <if test="intro != null">intro = #{intro},</if>
-            <if test="show != null">show = #{show},</if>
+            <if test="isShow != null">is_show = #{isShow},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
         </trim>

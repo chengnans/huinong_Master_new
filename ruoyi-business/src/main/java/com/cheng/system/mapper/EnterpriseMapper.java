@@ -7,7 +7,7 @@ import com.cheng.system.domain.Enterprise;
  * 产业企业Mapper接口
  * 
  * @author cheng
- * @date 2024-10-11
+ * @date 2024-10-12
  */
 public interface EnterpriseMapper 
 {

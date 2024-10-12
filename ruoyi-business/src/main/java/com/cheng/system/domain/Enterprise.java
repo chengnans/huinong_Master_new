@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 产业企业对象 enterprise
  * 
  * @author cheng
- * @date 2024-10-11
+ * @date 2024-10-12
  */
 public class Enterprise extends BaseEntity
 {
@@ -36,7 +36,7 @@ public class Enterprise extends BaseEntity
 
     /** 是否显示 */
     @Excel(name = "是否显示")
-    private String show;
+    private String isShow;
 
     public void setId(Long id) 
     {
@@ -83,14 +83,14 @@ public class Enterprise extends BaseEntity
     {
         return intro;
     }
-    public void setShow(String show) 
+    public void setIsShow(String isShow) 
     {
-        this.show = show;
+        this.isShow = isShow;
     }
 
-    public String getShow() 
+    public String getIsShow() 
     {
-        return show;
+        return isShow;
     }
 
     @Override
@@ -101,7 +101,7 @@ public class Enterprise extends BaseEntity
             .append("primaryClassify", getPrimaryClassify())
             .append("shortName", getShortName())
             .append("intro", getIntro())
-            .append("show", getShow())
+            .append("isShow", getIsShow())
             .append("createTime", getCreateTime())
             .append("updateTime", getUpdateTime())
             .toString();

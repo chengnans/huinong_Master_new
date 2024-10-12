@@ -33,13 +33,29 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="是否显示" prop="show">
+      <el-form-item label="是否显示" prop="isShow">
         <el-input
-          v-model="queryParams.show"
+          v-model="queryParams.isShow"
           placeholder="请输入是否显示"
           clearable
           @keyup.enter.native="handleQuery"
         />
+      </el-form-item>
+      <el-form-item label="创建时间" prop="createTime">
+        <el-date-picker clearable
+          v-model="queryParams.createTime"
+          type="date"
+          value-format="yyyy-MM-dd"
+          placeholder="请选择创建时间">
+        </el-date-picker>
+      </el-form-item>
+      <el-form-item label="最后更新时间" prop="updateTime">
+        <el-date-picker clearable
+          v-model="queryParams.updateTime"
+          type="date"
+          value-format="yyyy-MM-dd"
+          placeholder="请选择最后更新时间">
+        </el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -100,7 +116,7 @@
       <el-table-column label="一级分类" align="center" prop="primaryClassify" />
       <el-table-column label="简称" align="center" prop="shortName" />
       <el-table-column label="简介" align="center" prop="intro" />
-      <el-table-column label="是否显示" align="center" prop="show" />
+      <el-table-column label="是否显示" align="center" prop="isShow" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
@@ -154,8 +170,8 @@
         <el-form-item label="简介" prop="intro">
           <el-input v-model="form.intro" placeholder="请输入简介" />
         </el-form-item>
-        <el-form-item label="是否显示" prop="show">
-          <el-input v-model="form.show" placeholder="请输入是否显示" />
+        <el-form-item label="是否显示" prop="isShow">
+          <el-input v-model="form.isShow" placeholder="请输入是否显示" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -199,7 +215,9 @@ export default {
         primaryClassify: null,
         shortName: null,
         intro: null,
-        show: null,
+        isShow: null,
+        createTime: null,
+        updateTime: null
       },
       // 表单参数
       form: {},
@@ -234,7 +252,7 @@ export default {
         primaryClassify: null,
         shortName: null,
         intro: null,
-        show: null,
+        isShow: null,
         createTime: null,
         updateTime: null
       };

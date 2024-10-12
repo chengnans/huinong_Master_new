@@ -25,7 +25,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * 产业企业Controller
  * 
  * @author cheng
- * @date 2024-10-11
+ * @date 2024-10-12
  */
 @RestController
 @RequestMapping("/system/enterprise")
