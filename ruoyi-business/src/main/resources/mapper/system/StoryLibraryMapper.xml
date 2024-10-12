@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.StoryLibraryMapper">
+    
+    <resultMap type="StoryLibrary" id="StoryLibraryResult">
+        <result property="id"    column="id"    />
+        <result property="storyId"    column="story_id"    />
+        <result property="storyName"    column="story_name"    />
+        <result property="affiliatedOrganization"    column="affiliated_organization"    />
+        <result property="detail"    column="detail"    />
+        <result property="zhuang"    column="zhuang"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="operator"    column="operator"    />
+        <result property="operatingTime"    column="operating_time"    />
+    </resultMap>
+
+    <sql id="selectStoryLibraryVo">
+        select id, story_id, story_name, affiliated_organization, detail, zhuang, create_time, operator, operating_time from story_library
+    </sql>
+
+    <select id="selectStoryLibraryList" parameterType="StoryLibrary" resultMap="StoryLibraryResult">
+        <include refid="selectStoryLibraryVo"/>
+        <where>  
+            <if test="storyId != null  and storyId != ''"> and story_id = #{storyId}</if>
+            <if test="storyName != null  and storyName != ''"> and story_name like concat('%', #{storyName}, '%')</if>
+            <if test="affiliatedOrganization != null  and affiliatedOrganization != ''"> and affiliated_organization = #{affiliatedOrganization}</if>
+            <if test="detail != null  and detail != ''"> and detail = #{detail}</if>
+            <if test="zhuang != null  and zhuang != ''"> and zhuang = #{zhuang}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="operator != null  and operator != ''"> and operator = #{operator}</if>
+            <if test="operatingTime != null "> and operating_time = #{operatingTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectStoryLibraryById" parameterType="Long" resultMap="StoryLibraryResult">
+        <include refid="selectStoryLibraryVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertStoryLibrary" parameterType="StoryLibrary" useGeneratedKeys="true" keyProperty="id">
+        insert into story_library
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="storyId != null">story_id,</if>
+            <if test="storyName != null">story_name,</if>
+            <if test="affiliatedOrganization != null">affiliated_organization,</if>
+            <if test="detail != null">detail,</if>
+            <if test="zhuang != null">zhuang,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="operator != null">operator,</if>
+            <if test="operatingTime != null">operating_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="storyId != null">#{storyId},</if>
+            <if test="storyName != null">#{storyName},</if>
+            <if test="affiliatedOrganization != null">#{affiliatedOrganization},</if>
+            <if test="detail != null">#{detail},</if>
+            <if test="zhuang != null">#{zhuang},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="operator != null">#{operator},</if>
+            <if test="operatingTime != null">#{operatingTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStoryLibrary" parameterType="StoryLibrary">
+        update story_library
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="storyId != null">story_id = #{storyId},</if>
+            <if test="storyName != null">story_name = #{storyName},</if>
+            <if test="affiliatedOrganization != null">affiliated_organization = #{affiliatedOrganization},</if>
+            <if test="detail != null">detail = #{detail},</if>
+            <if test="zhuang != null">zhuang = #{zhuang},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="operator != null">operator = #{operator},</if>
+            <if test="operatingTime != null">operating_time = #{operatingTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteStoryLibraryById" parameterType="Long">
+        delete from story_library where id = #{id}
+    </delete>
+
+    <delete id="deleteStoryLibraryByIds" parameterType="String">
+        delete from story_library where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

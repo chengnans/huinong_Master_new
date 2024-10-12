@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.WorksListMapper">
+    
+    <resultMap type="WorksList" id="WorksListResult">
+        <result property="id"    column="id"    />
+        <result property="worksId"    column="works_id"    />
+        <result property="worksName"    column="works_name"    />
+        <result property="worksCover"    column="works_cover"    />
+        <result property="publisher"    column="publisher"    />
+        <result property="publishTime"    column="publish_time"    />
+        <result property="affiliatedEnterprise"    column="affiliated_enterprise"    />
+        <result property="affiliatedOrganization"    column="affiliated_organization"    />
+        <result property="zhuang"    column="zhuang"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectWorksListVo">
+        select id, works_id, works_name, works_cover, publisher, publish_time, affiliated_enterprise, affiliated_organization, zhuang, create_time from works_list
+    </sql>
+
+    <select id="selectWorksListList" parameterType="WorksList" resultMap="WorksListResult">
+        <include refid="selectWorksListVo"/>
+        <where>  
+            <if test="worksId != null  and worksId != ''"> and works_id = #{worksId}</if>
+            <if test="worksName != null  and worksName != ''"> and works_name like concat('%', #{worksName}, '%')</if>
+            <if test="worksCover != null  and worksCover != ''"> and works_cover = #{worksCover}</if>
+            <if test="publisher != null  and publisher != ''"> and publisher = #{publisher}</if>
+            <if test="publishTime != null "> and publish_time = #{publishTime}</if>
+            <if test="affiliatedEnterprise != null  and affiliatedEnterprise != ''"> and affiliated_enterprise = #{affiliatedEnterprise}</if>
+            <if test="affiliatedOrganization != null  and affiliatedOrganization != ''"> and affiliated_organization = #{affiliatedOrganization}</if>
+            <if test="zhuang != null  and zhuang != ''"> and zhuang = #{zhuang}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectWorksListById" parameterType="Long" resultMap="WorksListResult">
+        <include refid="selectWorksListVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertWorksList" parameterType="WorksList" useGeneratedKeys="true" keyProperty="id">
+        insert into works_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="worksId != null">works_id,</if>
+            <if test="worksName != null">works_name,</if>
+            <if test="worksCover != null">works_cover,</if>
+            <if test="publisher != null">publisher,</if>
+            <if test="publishTime != null">publish_time,</if>
+            <if test="affiliatedEnterprise != null">affiliated_enterprise,</if>
+            <if test="affiliatedOrganization != null">affiliated_organization,</if>
+            <if test="zhuang != null">zhuang,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="worksId != null">#{worksId},</if>
+            <if test="worksName != null">#{worksName},</if>
+            <if test="worksCover != null">#{worksCover},</if>
+            <if test="publisher != null">#{publisher},</if>
+            <if test="publishTime != null">#{publishTime},</if>
+            <if test="affiliatedEnterprise != null">#{affiliatedEnterprise},</if>
+            <if test="affiliatedOrganization != null">#{affiliatedOrganization},</if>
+            <if test="zhuang != null">#{zhuang},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWorksList" parameterType="WorksList">
+        update works_list
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="worksId != null">works_id = #{worksId},</if>
+            <if test="worksName != null">works_name = #{worksName},</if>
+            <if test="worksCover != null">works_cover = #{worksCover},</if>
+            <if test="publisher != null">publisher = #{publisher},</if>
+            <if test="publishTime != null">publish_time = #{publishTime},</if>
+            <if test="affiliatedEnterprise != null">affiliated_enterprise = #{affiliatedEnterprise},</if>
+            <if test="affiliatedOrganization != null">affiliated_organization = #{affiliatedOrganization},</if>
+            <if test="zhuang != null">zhuang = #{zhuang},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteWorksListById" parameterType="Long">
+        delete from works_list where id = #{id}
+    </delete>
+
+    <delete id="deleteWorksListByIds" parameterType="String">
+        delete from works_list where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

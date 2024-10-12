@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.ProductionListMapper">
+    
+    <resultMap type="ProductionList" id="ProductionListResult">
+        <result property="id"    column="id"    />
+        <result property="productionId"    column="production_id"    />
+        <result property="productionName"    column="production_name"    />
+        <result property="affiliatedEnterprise"    column="affiliated_enterprise"    />
+        <result property="affiliatedOrganization"    column="affiliated_organization"    />
+        <result property="zhuang"    column="zhuang"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="operator"    column="operator"    />
+        <result property="operatingTime"    column="operating_time"    />
+    </resultMap>
+
+    <sql id="selectProductionListVo">
+        select id, production_id, production_name, affiliated_enterprise, affiliated_organization, zhuang, create_time, operator, operating_time from production_list
+    </sql>
+
+    <select id="selectProductionListList" parameterType="ProductionList" resultMap="ProductionListResult">
+        <include refid="selectProductionListVo"/>
+        <where>  
+            <if test="productionId != null  and productionId != ''"> and production_id = #{productionId}</if>
+            <if test="productionName != null  and productionName != ''"> and production_name like concat('%', #{productionName}, '%')</if>
+            <if test="affiliatedEnterprise != null  and affiliatedEnterprise != ''"> and affiliated_enterprise = #{affiliatedEnterprise}</if>
+            <if test="affiliatedOrganization != null  and affiliatedOrganization != ''"> and affiliated_organization = #{affiliatedOrganization}</if>
+            <if test="zhuang != null  and zhuang != ''"> and zhuang = #{zhuang}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="operator != null  and operator != ''"> and operator = #{operator}</if>
+            <if test="operatingTime != null "> and operating_time = #{operatingTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectProductionListById" parameterType="Long" resultMap="ProductionListResult">
+        <include refid="selectProductionListVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertProductionList" parameterType="ProductionList" useGeneratedKeys="true" keyProperty="id">
+        insert into production_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="productionId != null">production_id,</if>
+            <if test="productionName != null">production_name,</if>
+            <if test="affiliatedEnterprise != null">affiliated_enterprise,</if>
+            <if test="affiliatedOrganization != null">affiliated_organization,</if>
+            <if test="zhuang != null">zhuang,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="operator != null">operator,</if>
+            <if test="operatingTime != null">operating_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="productionId != null">#{productionId},</if>
+            <if test="productionName != null">#{productionName},</if>
+            <if test="affiliatedEnterprise != null">#{affiliatedEnterprise},</if>
+            <if test="affiliatedOrganization != null">#{affiliatedOrganization},</if>
+            <if test="zhuang != null">#{zhuang},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="operator != null">#{operator},</if>
+            <if test="operatingTime != null">#{operatingTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateProductionList" parameterType="ProductionList">
+        update production_list
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="productionId != null">production_id = #{productionId},</if>
+            <if test="productionName != null">production_name = #{productionName},</if>
+            <if test="affiliatedEnterprise != null">affiliated_enterprise = #{affiliatedEnterprise},</if>
+            <if test="affiliatedOrganization != null">affiliated_organization = #{affiliatedOrganization},</if>
+            <if test="zhuang != null">zhuang = #{zhuang},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="operator != null">operator = #{operator},</if>
+            <if test="operatingTime != null">operating_time = #{operatingTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteProductionListById" parameterType="Long">
+        delete from production_list where id = #{id}
+    </delete>
+
+    <delete id="deleteProductionListByIds" parameterType="String">
+        delete from production_list where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

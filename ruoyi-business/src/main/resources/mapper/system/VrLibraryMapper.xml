@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.VrLibraryMapper">
+    
+    <resultMap type="VrLibrary" id="VrLibraryResult">
+        <result property="id"    column="id"    />
+        <result property="vrId"    column="vr_id"    />
+        <result property="vrName"    column="vr_name"    />
+        <result property="vrAddress"    column="vr_address"    />
+        <result property="vrRelevant"    column="vr_relevant"    />
+        <result property="affiliatedOrganization"    column="affiliated_organization"    />
+        <result property="detail"    column="detail"    />
+        <result property="zhuang"    column="zhuang"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="operator"    column="operator"    />
+        <result property="operatingTime"    column="operating_time"    />
+    </resultMap>
+
+    <sql id="selectVrLibraryVo">
+        select id, vr_id, vr_name, vr_address, vr_relevant, affiliated_organization, detail, zhuang, create_time, operator, operating_time from vr_library
+    </sql>
+
+    <select id="selectVrLibraryList" parameterType="VrLibrary" resultMap="VrLibraryResult">
+        <include refid="selectVrLibraryVo"/>
+        <where>  
+            <if test="vrId != null  and vrId != ''"> and vr_id = #{vrId}</if>
+            <if test="vrName != null  and vrName != ''"> and vr_name like concat('%', #{vrName}, '%')</if>
+            <if test="vrAddress != null  and vrAddress != ''"> and vr_address = #{vrAddress}</if>
+            <if test="vrRelevant != null  and vrRelevant != ''"> and vr_relevant = #{vrRelevant}</if>
+            <if test="affiliatedOrganization != null  and affiliatedOrganization != ''"> and affiliated_organization = #{affiliatedOrganization}</if>
+            <if test="detail != null  and detail != ''"> and detail = #{detail}</if>
+            <if test="zhuang != null  and zhuang != ''"> and zhuang = #{zhuang}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="operator != null  and operator != ''"> and operator = #{operator}</if>
+            <if test="operatingTime != null "> and operating_time = #{operatingTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectVrLibraryById" parameterType="Long" resultMap="VrLibraryResult">
+        <include refid="selectVrLibraryVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertVrLibrary" parameterType="VrLibrary" useGeneratedKeys="true" keyProperty="id">
+        insert into vr_library
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="vrId != null">vr_id,</if>
+            <if test="vrName != null">vr_name,</if>
+            <if test="vrAddress != null">vr_address,</if>
+            <if test="vrRelevant != null">vr_relevant,</if>
+            <if test="affiliatedOrganization != null">affiliated_organization,</if>
+            <if test="detail != null">detail,</if>
+            <if test="zhuang != null">zhuang,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="operator != null">operator,</if>
+            <if test="operatingTime != null">operating_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="vrId != null">#{vrId},</if>
+            <if test="vrName != null">#{vrName},</if>
+            <if test="vrAddress != null">#{vrAddress},</if>
+            <if test="vrRelevant != null">#{vrRelevant},</if>
+            <if test="affiliatedOrganization != null">#{affiliatedOrganization},</if>
+            <if test="detail != null">#{detail},</if>
+            <if test="zhuang != null">#{zhuang},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="operator != null">#{operator},</if>
+            <if test="operatingTime != null">#{operatingTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateVrLibrary" parameterType="VrLibrary">
+        update vr_library
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="vrId != null">vr_id = #{vrId},</if>
+            <if test="vrName != null">vr_name = #{vrName},</if>
+            <if test="vrAddress != null">vr_address = #{vrAddress},</if>
+            <if test="vrRelevant != null">vr_relevant = #{vrRelevant},</if>
+            <if test="affiliatedOrganization != null">affiliated_organization = #{affiliatedOrganization},</if>
+            <if test="detail != null">detail = #{detail},</if>
+            <if test="zhuang != null">zhuang = #{zhuang},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="operator != null">operator = #{operator},</if>
+            <if test="operatingTime != null">operating_time = #{operatingTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteVrLibraryById" parameterType="Long">
+        delete from vr_library where id = #{id}
+    </delete>
+
+    <delete id="deleteVrLibraryByIds" parameterType="String">
+        delete from vr_library where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

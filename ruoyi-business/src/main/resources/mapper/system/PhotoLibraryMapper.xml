@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.PhotoLibraryMapper">
+    
+    <resultMap type="PhotoLibrary" id="PhotoLibraryResult">
+        <result property="id"    column="id"    />
+        <result property="photoId"    column="photo_id"    />
+        <result property="photoName"    column="photo_name"    />
+        <result property="photoPreview"    column="photo_preview"    />
+        <result property="photoAddress"    column="photo_address"    />
+        <result property="photoSize"    column="photo_size"    />
+        <result property="photoDimension"    column="photo_dimension"    />
+        <result property="photoFormat"    column="photo_format"    />
+        <result property="detail"    column="detail"    />
+        <result property="affiliatedOrganization"    column="affiliated_organization"    />
+        <result property="zhuang"    column="zhuang"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="operator"    column="operator"    />
+        <result property="operatingTime"    column="operating_time"    />
+    </resultMap>
+
+    <sql id="selectPhotoLibraryVo">
+        select id, photo_id, photo_name, photo_preview, photo_address, photo_size, photo_dimension, photo_format, detail, affiliated_organization, zhuang, create_time, operator, operating_time from photo_library
+    </sql>
+
+    <select id="selectPhotoLibraryList" parameterType="PhotoLibrary" resultMap="PhotoLibraryResult">
+        <include refid="selectPhotoLibraryVo"/>
+        <where>  
+            <if test="photoId != null  and photoId != ''"> and photo_id = #{photoId}</if>
+            <if test="photoName != null  and photoName != ''"> and photo_name like concat('%', #{photoName}, '%')</if>
+            <if test="photoPreview != null  and photoPreview != ''"> and photo_preview = #{photoPreview}</if>
+            <if test="photoAddress != null  and photoAddress != ''"> and photo_address = #{photoAddress}</if>
+            <if test="photoSize != null  and photoSize != ''"> and photo_size = #{photoSize}</if>
+            <if test="photoDimension != null  and photoDimension != ''"> and photo_dimension = #{photoDimension}</if>
+            <if test="photoFormat != null  and photoFormat != ''"> and photo_format = #{photoFormat}</if>
+            <if test="detail != null  and detail != ''"> and detail = #{detail}</if>
+            <if test="affiliatedOrganization != null  and affiliatedOrganization != ''"> and affiliated_organization = #{affiliatedOrganization}</if>
+            <if test="zhuang != null  and zhuang != ''"> and zhuang = #{zhuang}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="operator != null  and operator != ''"> and operator = #{operator}</if>
+            <if test="operatingTime != null "> and operating_time = #{operatingTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectPhotoLibraryById" parameterType="Long" resultMap="PhotoLibraryResult">
+        <include refid="selectPhotoLibraryVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertPhotoLibrary" parameterType="PhotoLibrary" useGeneratedKeys="true" keyProperty="id">
+        insert into photo_library
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="photoId != null">photo_id,</if>
+            <if test="photoName != null">photo_name,</if>
+            <if test="photoPreview != null">photo_preview,</if>
+            <if test="photoAddress != null">photo_address,</if>
+            <if test="photoSize != null">photo_size,</if>
+            <if test="photoDimension != null">photo_dimension,</if>
+            <if test="photoFormat != null">photo_format,</if>
+            <if test="detail != null">detail,</if>
+            <if test="affiliatedOrganization != null">affiliated_organization,</if>
+            <if test="zhuang != null">zhuang,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="operator != null">operator,</if>
+            <if test="operatingTime != null">operating_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="photoId != null">#{photoId},</if>
+            <if test="photoName != null">#{photoName},</if>
+            <if test="photoPreview != null">#{photoPreview},</if>
+            <if test="photoAddress != null">#{photoAddress},</if>
+            <if test="photoSize != null">#{photoSize},</if>
+            <if test="photoDimension != null">#{photoDimension},</if>
+            <if test="photoFormat != null">#{photoFormat},</if>
+            <if test="detail != null">#{detail},</if>
+            <if test="affiliatedOrganization != null">#{affiliatedOrganization},</if>
+            <if test="zhuang != null">#{zhuang},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="operator != null">#{operator},</if>
+            <if test="operatingTime != null">#{operatingTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePhotoLibrary" parameterType="PhotoLibrary">
+        update photo_library
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="photoId != null">photo_id = #{photoId},</if>
+            <if test="photoName != null">photo_name = #{photoName},</if>
+            <if test="photoPreview != null">photo_preview = #{photoPreview},</if>
+            <if test="photoAddress != null">photo_address = #{photoAddress},</if>
+            <if test="photoSize != null">photo_size = #{photoSize},</if>
+            <if test="photoDimension != null">photo_dimension = #{photoDimension},</if>
+            <if test="photoFormat != null">photo_format = #{photoFormat},</if>
+            <if test="detail != null">detail = #{detail},</if>
+            <if test="affiliatedOrganization != null">affiliated_organization = #{affiliatedOrganization},</if>
+            <if test="zhuang != null">zhuang = #{zhuang},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="operator != null">operator = #{operator},</if>
+            <if test="operatingTime != null">operating_time = #{operatingTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePhotoLibraryById" parameterType="Long">
+        delete from photo_library where id = #{id}
+    </delete>
+
+    <delete id="deletePhotoLibraryByIds" parameterType="String">
+        delete from photo_library where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

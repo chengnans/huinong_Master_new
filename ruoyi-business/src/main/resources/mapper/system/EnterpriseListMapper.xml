@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.EnterpriseListMapper">
+    
+    <resultMap type="EnterpriseList" id="EnterpriseListResult">
+        <result property="id"    column="id"    />
+        <result property="enterpriseId"    column="enterprise_id"    />
+        <result property="enterpriseName"    column="enterprise_name"    />
+        <result property="enterpriseShortName"    column="enterprise_short_name"    />
+        <result property="enterpriseLegal"    column="enterprise_legal"    />
+        <result property="phone"    column="phone"    />
+        <result property="address"    column="address"    />
+        <result property="liveName"    column="live_name"    />
+        <result property="enterpriseClassify"    column="enterprise_classify"    />
+        <result property="organization"    column="organization"    />
+        <result property="zhuang"    column="zhuang"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectEnterpriseListVo">
+        select id, enterprise_id, enterprise_name, enterprise_short_name, enterprise_legal, phone, address, live_name, enterprise_classify, organization, zhuang, create_time from enterprise_list
+    </sql>
+
+    <select id="selectEnterpriseListList" parameterType="EnterpriseList" resultMap="EnterpriseListResult">
+        <include refid="selectEnterpriseListVo"/>
+        <where>  
+            <if test="enterpriseId != null  and enterpriseId != ''"> and enterprise_id = #{enterpriseId}</if>
+            <if test="enterpriseName != null  and enterpriseName != ''"> and enterprise_name like concat('%', #{enterpriseName}, '%')</if>
+            <if test="enterpriseShortName != null  and enterpriseShortName != ''"> and enterprise_short_name like concat('%', #{enterpriseShortName}, '%')</if>
+            <if test="enterpriseLegal != null  and enterpriseLegal != ''"> and enterprise_legal = #{enterpriseLegal}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+            <if test="liveName != null  and liveName != ''"> and live_name like concat('%', #{liveName}, '%')</if>
+            <if test="enterpriseClassify != null  and enterpriseClassify != ''"> and enterprise_classify = #{enterpriseClassify}</if>
+            <if test="organization != null  and organization != ''"> and organization = #{organization}</if>
+            <if test="zhuang != null  and zhuang != ''"> and zhuang = #{zhuang}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectEnterpriseListById" parameterType="Long" resultMap="EnterpriseListResult">
+        <include refid="selectEnterpriseListVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertEnterpriseList" parameterType="EnterpriseList" useGeneratedKeys="true" keyProperty="id">
+        insert into enterprise_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="enterpriseId != null">enterprise_id,</if>
+            <if test="enterpriseName != null">enterprise_name,</if>
+            <if test="enterpriseShortName != null">enterprise_short_name,</if>
+            <if test="enterpriseLegal != null">enterprise_legal,</if>
+            <if test="phone != null">phone,</if>
+            <if test="address != null">address,</if>
+            <if test="liveName != null">live_name,</if>
+            <if test="enterpriseClassify != null">enterprise_classify,</if>
+            <if test="organization != null">organization,</if>
+            <if test="zhuang != null">zhuang,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="enterpriseId != null">#{enterpriseId},</if>
+            <if test="enterpriseName != null">#{enterpriseName},</if>
+            <if test="enterpriseShortName != null">#{enterpriseShortName},</if>
+            <if test="enterpriseLegal != null">#{enterpriseLegal},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="address != null">#{address},</if>
+            <if test="liveName != null">#{liveName},</if>
+            <if test="enterpriseClassify != null">#{enterpriseClassify},</if>
+            <if test="organization != null">#{organization},</if>
+            <if test="zhuang != null">#{zhuang},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEnterpriseList" parameterType="EnterpriseList">
+        update enterprise_list
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="enterpriseId != null">enterprise_id = #{enterpriseId},</if>
+            <if test="enterpriseName != null">enterprise_name = #{enterpriseName},</if>
+            <if test="enterpriseShortName != null">enterprise_short_name = #{enterpriseShortName},</if>
+            <if test="enterpriseLegal != null">enterprise_legal = #{enterpriseLegal},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="liveName != null">live_name = #{liveName},</if>
+            <if test="enterpriseClassify != null">enterprise_classify = #{enterpriseClassify},</if>
+            <if test="organization != null">organization = #{organization},</if>
+            <if test="zhuang != null">zhuang = #{zhuang},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEnterpriseListById" parameterType="Long">
+        delete from enterprise_list where id = #{id}
+    </delete>
+
+    <delete id="deleteEnterpriseListByIds" parameterType="String">
+        delete from enterprise_list where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

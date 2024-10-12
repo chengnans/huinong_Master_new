@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.VideoLibraryMapper">
+    
+    <resultMap type="VideoLibrary" id="VideoLibraryResult">
+        <result property="id"    column="id"    />
+        <result property="videoId"    column="video_id"    />
+        <result property="videoName"    column="video_name"    />
+        <result property="videoAddress"    column="video_address"    />
+        <result property="videoSize"    column="video_size"    />
+        <result property="videoLength"    column="video_length"    />
+        <result property="affiliatedOrganization"    column="affiliated_organization"    />
+        <result property="detail"    column="detail"    />
+        <result property="zhuang"    column="zhuang"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="operator"    column="operator"    />
+        <result property="operatingTime"    column="operating_time"    />
+    </resultMap>
+
+    <sql id="selectVideoLibraryVo">
+        select id, video_id, video_name, video_address, video_size, video_length, affiliated_organization, detail, zhuang, create_time, operator, operating_time from video_library
+    </sql>
+
+    <select id="selectVideoLibraryList" parameterType="VideoLibrary" resultMap="VideoLibraryResult">
+        <include refid="selectVideoLibraryVo"/>
+        <where>  
+            <if test="videoId != null  and videoId != ''"> and video_id = #{videoId}</if>
+            <if test="videoName != null  and videoName != ''"> and video_name like concat('%', #{videoName}, '%')</if>
+            <if test="videoAddress != null  and videoAddress != ''"> and video_address = #{videoAddress}</if>
+            <if test="videoSize != null  and videoSize != ''"> and video_size = #{videoSize}</if>
+            <if test="videoLength != null  and videoLength != ''"> and video_length = #{videoLength}</if>
+            <if test="affiliatedOrganization != null  and affiliatedOrganization != ''"> and affiliated_organization = #{affiliatedOrganization}</if>
+            <if test="detail != null  and detail != ''"> and detail = #{detail}</if>
+            <if test="zhuang != null  and zhuang != ''"> and zhuang = #{zhuang}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="operator != null  and operator != ''"> and operator = #{operator}</if>
+            <if test="operatingTime != null "> and operating_time = #{operatingTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectVideoLibraryById" parameterType="Long" resultMap="VideoLibraryResult">
+        <include refid="selectVideoLibraryVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertVideoLibrary" parameterType="VideoLibrary" useGeneratedKeys="true" keyProperty="id">
+        insert into video_library
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="videoId != null">video_id,</if>
+            <if test="videoName != null">video_name,</if>
+            <if test="videoAddress != null">video_address,</if>
+            <if test="videoSize != null">video_size,</if>
+            <if test="videoLength != null">video_length,</if>
+            <if test="affiliatedOrganization != null">affiliated_organization,</if>
+            <if test="detail != null">detail,</if>
+            <if test="zhuang != null">zhuang,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="operator != null">operator,</if>
+            <if test="operatingTime != null">operating_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="videoId != null">#{videoId},</if>
+            <if test="videoName != null">#{videoName},</if>
+            <if test="videoAddress != null">#{videoAddress},</if>
+            <if test="videoSize != null">#{videoSize},</if>
+            <if test="videoLength != null">#{videoLength},</if>
+            <if test="affiliatedOrganization != null">#{affiliatedOrganization},</if>
+            <if test="detail != null">#{detail},</if>
+            <if test="zhuang != null">#{zhuang},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="operator != null">#{operator},</if>
+            <if test="operatingTime != null">#{operatingTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateVideoLibrary" parameterType="VideoLibrary">
+        update video_library
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="videoId != null">video_id = #{videoId},</if>
+            <if test="videoName != null">video_name = #{videoName},</if>
+            <if test="videoAddress != null">video_address = #{videoAddress},</if>
+            <if test="videoSize != null">video_size = #{videoSize},</if>
+            <if test="videoLength != null">video_length = #{videoLength},</if>
+            <if test="affiliatedOrganization != null">affiliated_organization = #{affiliatedOrganization},</if>
+            <if test="detail != null">detail = #{detail},</if>
+            <if test="zhuang != null">zhuang = #{zhuang},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="operator != null">operator = #{operator},</if>
+            <if test="operatingTime != null">operating_time = #{operatingTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteVideoLibraryById" parameterType="Long">
+        delete from video_library where id = #{id}
+    </delete>
+
+    <delete id="deleteVideoLibraryByIds" parameterType="String">
+        delete from video_library where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
