@@ -90,8 +90,9 @@
 
     & .nest-menu .el-submenu>.el-submenu__title,
     & .el-submenu .el-menu-item {
-      min-width: $base-sidebar-width !important;
-
+      //选中后字体颜色
+      //min-width: $base-sidebar-width !important;
+      color: #FFFFFF !important;
       &:hover {
         background-color: rgba(0, 0, 0, 0.06) !important;
       }

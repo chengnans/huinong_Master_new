@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.EmployeeManageMapper">
+    
+    <resultMap type="EmployeeManage" id="EmployeeManageResult">
+        <result property="id"    column="id"    />
+        <result property="loginAccount"    column="login_account"    />
+        <result property="loginPassword"    column="login_password"    />
+        <result property="confirmPassword"    column="confirm_password"    />
+        <result property="nickname"    column="nickname"    />
+        <result property="affiliation"    column="affiliation"    />
+        <result property="employeeName"    column="employee_name"    />
+        <result property="employeeSex"    column="employee_sex"    />
+        <result property="phoneNumber"    column="phone_number"    />
+        <result property="employeeEmail"    column="employee_email"    />
+        <result property="idCard"    column="id_card"    />
+        <result property="apartment"    column="apartment"    />
+        <result property="employeePosts"    column="employee_posts"    />
+        <result property="regionallevel"    column="regionallevel"    />
+        <result property="region"    column="region"    />
+        <result property="remarksinformation"    column="remarksinformation"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectEmployeeManageVo">
+        select id, login_account, login_password, confirm_password, nickname, affiliation, employee_name, employee_sex, phone_number, employee_email, id_card, apartment, employee_posts, regionallevel, region, remarksinformation, create_time from employee_manage
+    </sql>
+
+    <select id="selectEmployeeManageList" parameterType="EmployeeManage" resultMap="EmployeeManageResult">
+        <include refid="selectEmployeeManageVo"/>
+        <where>  
+            <if test="loginAccount != null  and loginAccount != ''"> and login_account = #{loginAccount}</if>
+            <if test="loginPassword != null  and loginPassword != ''"> and login_password = #{loginPassword}</if>
+            <if test="confirmPassword != null  and confirmPassword != ''"> and confirm_password = #{confirmPassword}</if>
+            <if test="nickname != null  and nickname != ''"> and nickname like concat('%', #{nickname}, '%')</if>
+            <if test="affiliation != null  and affiliation != ''"> and affiliation = #{affiliation}</if>
+            <if test="employeeName != null  and employeeName != ''"> and employee_name like concat('%', #{employeeName}, '%')</if>
+            <if test="employeeSex != null  and employeeSex != ''"> and employee_sex = #{employeeSex}</if>
+            <if test="phoneNumber != null  and phoneNumber != ''"> and phone_number = #{phoneNumber}</if>
+            <if test="employeeEmail != null  and employeeEmail != ''"> and employee_email = #{employeeEmail}</if>
+            <if test="idCard != null  and idCard != ''"> and id_card = #{idCard}</if>
+            <if test="apartment != null  and apartment != ''"> and apartment = #{apartment}</if>
+            <if test="employeePosts != null  and employeePosts != ''"> and employee_posts = #{employeePosts}</if>
+            <if test="regionallevel != null  and regionallevel != ''"> and regionallevel = #{regionallevel}</if>
+            <if test="region != null  and region != ''"> and region = #{region}</if>
+            <if test="remarksinformation != null  and remarksinformation != ''"> and remarksinformation = #{remarksinformation}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectEmployeeManageById" parameterType="Long" resultMap="EmployeeManageResult">
+        <include refid="selectEmployeeManageVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertEmployeeManage" parameterType="EmployeeManage" useGeneratedKeys="true" keyProperty="id">
+        insert into employee_manage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="loginAccount != null">login_account,</if>
+            <if test="loginPassword != null">login_password,</if>
+            <if test="confirmPassword != null">confirm_password,</if>
+            <if test="nickname != null">nickname,</if>
+            <if test="affiliation != null">affiliation,</if>
+            <if test="employeeName != null">employee_name,</if>
+            <if test="employeeSex != null">employee_sex,</if>
+            <if test="phoneNumber != null">phone_number,</if>
+            <if test="employeeEmail != null">employee_email,</if>
+            <if test="idCard != null">id_card,</if>
+            <if test="apartment != null">apartment,</if>
+            <if test="employeePosts != null">employee_posts,</if>
+            <if test="regionallevel != null">regionallevel,</if>
+            <if test="region != null">region,</if>
+            <if test="remarksinformation != null">remarksinformation,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="loginAccount != null">#{loginAccount},</if>
+            <if test="loginPassword != null">#{loginPassword},</if>
+            <if test="confirmPassword != null">#{confirmPassword},</if>
+            <if test="nickname != null">#{nickname},</if>
+            <if test="affiliation != null">#{affiliation},</if>
+            <if test="employeeName != null">#{employeeName},</if>
+            <if test="employeeSex != null">#{employeeSex},</if>
+            <if test="phoneNumber != null">#{phoneNumber},</if>
+            <if test="employeeEmail != null">#{employeeEmail},</if>
+            <if test="idCard != null">#{idCard},</if>
+            <if test="apartment != null">#{apartment},</if>
+            <if test="employeePosts != null">#{employeePosts},</if>
+            <if test="regionallevel != null">#{regionallevel},</if>
+            <if test="region != null">#{region},</if>
+            <if test="remarksinformation != null">#{remarksinformation},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEmployeeManage" parameterType="EmployeeManage">
+        update employee_manage
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="loginAccount != null">login_account = #{loginAccount},</if>
+            <if test="loginPassword != null">login_password = #{loginPassword},</if>
+            <if test="confirmPassword != null">confirm_password = #{confirmPassword},</if>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="affiliation != null">affiliation = #{affiliation},</if>
+            <if test="employeeName != null">employee_name = #{employeeName},</if>
+            <if test="employeeSex != null">employee_sex = #{employeeSex},</if>
+            <if test="phoneNumber != null">phone_number = #{phoneNumber},</if>
+            <if test="employeeEmail != null">employee_email = #{employeeEmail},</if>
+            <if test="idCard != null">id_card = #{idCard},</if>
+            <if test="apartment != null">apartment = #{apartment},</if>
+            <if test="employeePosts != null">employee_posts = #{employeePosts},</if>
+            <if test="regionallevel != null">regionallevel = #{regionallevel},</if>
+            <if test="region != null">region = #{region},</if>
+            <if test="remarksinformation != null">remarksinformation = #{remarksinformation},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteEmployeeManageById" parameterType="Long">
+        delete from employee_manage where id = #{id}
+    </delete>
+
+    <delete id="deleteEmployeeManageByIds" parameterType="String">
+        delete from employee_manage where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

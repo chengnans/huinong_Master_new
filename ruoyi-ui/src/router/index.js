@@ -61,14 +61,28 @@ export const constantRoutes = [
     component: () => import('@/views/error/401'),
     hidden: true
   },
+  // 修改首页路由（解决刷新页面或关闭全部页面后的默认路由问题）
+  // {
+  //   path: '',
+  //   component: Layout,
+  //   redirect: 'index',
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       component: () => import('@/views/index'),
+  //       name: 'Index',
+  //       meta: { title: '首页', icon: 'dashboard', affix: true }
+  //     }
+  //   ]
+  // },
   {
     path: '',
     component: Layout,
-    redirect: 'index',
+    redirect: 'home/index',
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/index'),
+        path: 'home/index',
+        component: () => import('@/views/system/home/index'),
         name: 'Index',
         meta: { title: '首页', icon: 'dashboard', affix: true }
       }

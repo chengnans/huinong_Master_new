@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.AppRoleManageMapper">
+    
+    <resultMap type="AppRoleManage" id="AppRoleManageResult">
+        <result property="id"    column="id"    />
+        <result property="roleName"    column="role_name"    />
+        <result property="roleDetail"    column="role_detail"    />
+        <result property="roleType"    column="role_type"    />
+        <result property="apartment"    column="apartment"    />
+        <result property="roleCondition"    column="role_condition"    />
+        <result property="roleSorts"    column="role_sorts"    />
+        <result property="operateTime"    column="operate_time"    />
+        <result property="operator"    column="operator"    />
+    </resultMap>
+
+    <sql id="selectAppRoleManageVo">
+        select id, role_name, role_detail, role_type, apartment, role_condition, role_sorts, operate_time, operator from app_role_manage
+    </sql>
+
+    <select id="selectAppRoleManageList" parameterType="AppRoleManage" resultMap="AppRoleManageResult">
+        <include refid="selectAppRoleManageVo"/>
+        <where>  
+            <if test="roleName != null  and roleName != ''"> and role_name like concat('%', #{roleName}, '%')</if>
+            <if test="roleDetail != null  and roleDetail != ''"> and role_detail = #{roleDetail}</if>
+            <if test="roleType != null  and roleType != ''"> and role_type = #{roleType}</if>
+            <if test="apartment != null  and apartment != ''"> and apartment = #{apartment}</if>
+            <if test="roleCondition != null  and roleCondition != ''"> and role_condition = #{roleCondition}</if>
+            <if test="roleSorts != null  and roleSorts != ''"> and role_sorts = #{roleSorts}</if>
+            <if test="operateTime != null "> and operate_time = #{operateTime}</if>
+            <if test="operator != null  and operator != ''"> and operator = #{operator}</if>
+        </where>
+    </select>
+    
+    <select id="selectAppRoleManageById" parameterType="Long" resultMap="AppRoleManageResult">
+        <include refid="selectAppRoleManageVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertAppRoleManage" parameterType="AppRoleManage" useGeneratedKeys="true" keyProperty="id">
+        insert into app_role_manage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleName != null">role_name,</if>
+            <if test="roleDetail != null">role_detail,</if>
+            <if test="roleType != null">role_type,</if>
+            <if test="apartment != null">apartment,</if>
+            <if test="roleCondition != null">role_condition,</if>
+            <if test="roleSorts != null">role_sorts,</if>
+            <if test="operateTime != null">operate_time,</if>
+            <if test="operator != null">operator,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleName != null">#{roleName},</if>
+            <if test="roleDetail != null">#{roleDetail},</if>
+            <if test="roleType != null">#{roleType},</if>
+            <if test="apartment != null">#{apartment},</if>
+            <if test="roleCondition != null">#{roleCondition},</if>
+            <if test="roleSorts != null">#{roleSorts},</if>
+            <if test="operateTime != null">#{operateTime},</if>
+            <if test="operator != null">#{operator},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAppRoleManage" parameterType="AppRoleManage">
+        update app_role_manage
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roleName != null">role_name = #{roleName},</if>
+            <if test="roleDetail != null">role_detail = #{roleDetail},</if>
+            <if test="roleType != null">role_type = #{roleType},</if>
+            <if test="apartment != null">apartment = #{apartment},</if>
+            <if test="roleCondition != null">role_condition = #{roleCondition},</if>
+            <if test="roleSorts != null">role_sorts = #{roleSorts},</if>
+            <if test="operateTime != null">operate_time = #{operateTime},</if>
+            <if test="operator != null">operator = #{operator},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAppRoleManageById" parameterType="Long">
+        delete from app_role_manage where id = #{id}
+    </delete>
+
+    <delete id="deleteAppRoleManageByIds" parameterType="String">
+        delete from app_role_manage where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

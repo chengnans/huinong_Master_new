@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.AppUsersMapper">
+    
+    <resultMap type="AppUsers" id="AppUsersResult">
+        <result property="id"    column="id"    />
+        <result property="phone"    column="phone"    />
+        <result property="userName"    column="user_name"    />
+        <result property="userCondition"    column="user_condition"    />
+        <result property="deviceNumber"    column="device_number"    />
+        <result property="apartment"    column="apartment"    />
+        <result property="city"    column="city"    />
+        <result property="registerTime"    column="register_time"    />
+        <result property="lastLoginTime"    column="last_login_time"    />
+        <result property="userOrigin"    column="user_origin"    />
+    </resultMap>
+
+    <sql id="selectAppUsersVo">
+        select id, phone, user_name, user_condition, device_number, apartment, city, register_time, last_login_time, user_origin from app_users
+    </sql>
+
+    <select id="selectAppUsersList" parameterType="AppUsers" resultMap="AppUsersResult">
+        <include refid="selectAppUsersVo"/>
+        <where>  
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="userCondition != null  and userCondition != ''"> and user_condition = #{userCondition}</if>
+            <if test="deviceNumber != null  and deviceNumber != ''"> and device_number = #{deviceNumber}</if>
+            <if test="apartment != null  and apartment != ''"> and apartment = #{apartment}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="registerTime != null "> and register_time = #{registerTime}</if>
+            <if test="lastLoginTime != null "> and last_login_time = #{lastLoginTime}</if>
+            <if test="userOrigin != null  and userOrigin != ''"> and user_origin = #{userOrigin}</if>
+        </where>
+    </select>
+    
+    <select id="selectAppUsersById" parameterType="Long" resultMap="AppUsersResult">
+        <include refid="selectAppUsersVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertAppUsers" parameterType="AppUsers" useGeneratedKeys="true" keyProperty="id">
+        insert into app_users
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="phone != null">phone,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="userCondition != null">user_condition,</if>
+            <if test="deviceNumber != null">device_number,</if>
+            <if test="apartment != null">apartment,</if>
+            <if test="city != null">city,</if>
+            <if test="registerTime != null">register_time,</if>
+            <if test="lastLoginTime != null">last_login_time,</if>
+            <if test="userOrigin != null">user_origin,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="phone != null">#{phone},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="userCondition != null">#{userCondition},</if>
+            <if test="deviceNumber != null">#{deviceNumber},</if>
+            <if test="apartment != null">#{apartment},</if>
+            <if test="city != null">#{city},</if>
+            <if test="registerTime != null">#{registerTime},</if>
+            <if test="lastLoginTime != null">#{lastLoginTime},</if>
+            <if test="userOrigin != null">#{userOrigin},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAppUsers" parameterType="AppUsers">
+        update app_users
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="userCondition != null">user_condition = #{userCondition},</if>
+            <if test="deviceNumber != null">device_number = #{deviceNumber},</if>
+            <if test="apartment != null">apartment = #{apartment},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="registerTime != null">register_time = #{registerTime},</if>
+            <if test="lastLoginTime != null">last_login_time = #{lastLoginTime},</if>
+            <if test="userOrigin != null">user_origin = #{userOrigin},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAppUsersById" parameterType="Long">
+        delete from app_users where id = #{id}
+    </delete>
+
+    <delete id="deleteAppUsersByIds" parameterType="String">
+        delete from app_users where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

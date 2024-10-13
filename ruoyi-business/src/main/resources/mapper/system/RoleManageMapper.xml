@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.RoleManageMapper">
+    
+    <resultMap type="RoleManage" id="RoleManageResult">
+        <result property="id"    column="id"    />
+        <result property="institution"    column="institution"    />
+        <result property="roleName"    column="role_name"    />
+        <result property="roleDescription"    column="role_description"    />
+        <result property="operationPermission"    column="operation_permission"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectRoleManageVo">
+        select id, institution, role_name, role_description, operation_permission, create_time from role_manage
+    </sql>
+
+    <select id="selectRoleManageList" parameterType="RoleManage" resultMap="RoleManageResult">
+        <include refid="selectRoleManageVo"/>
+        <where>  
+            <if test="institution != null  and institution != ''"> and institution = #{institution}</if>
+            <if test="roleName != null  and roleName != ''"> and role_name like concat('%', #{roleName}, '%')</if>
+            <if test="roleDescription != null  and roleDescription != ''"> and role_description = #{roleDescription}</if>
+            <if test="operationPermission != null  and operationPermission != ''"> and operation_permission = #{operationPermission}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectRoleManageById" parameterType="Long" resultMap="RoleManageResult">
+        <include refid="selectRoleManageVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertRoleManage" parameterType="RoleManage" useGeneratedKeys="true" keyProperty="id">
+        insert into role_manage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="institution != null">institution,</if>
+            <if test="roleName != null">role_name,</if>
+            <if test="roleDescription != null">role_description,</if>
+            <if test="operationPermission != null">operation_permission,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="institution != null">#{institution},</if>
+            <if test="roleName != null">#{roleName},</if>
+            <if test="roleDescription != null">#{roleDescription},</if>
+            <if test="operationPermission != null">#{operationPermission},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRoleManage" parameterType="RoleManage">
+        update role_manage
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="institution != null">institution = #{institution},</if>
+            <if test="roleName != null">role_name = #{roleName},</if>
+            <if test="roleDescription != null">role_description = #{roleDescription},</if>
+            <if test="operationPermission != null">operation_permission = #{operationPermission},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRoleManageById" parameterType="Long">
+        delete from role_manage where id = #{id}
+    </delete>
+
+    <delete id="deleteRoleManageByIds" parameterType="String">
+        delete from role_manage where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">智农管理系统</h3>
+      <h3 class="title">惠农大数据平台</h3>
       <el-form-item prop="username">
         <el-input
           v-model="loginForm.username"
@@ -72,8 +72,8 @@ export default {
     return {
       codeUrl: "",
       loginForm: {
-        username: "admin",
-        password: "admin123",
+        username: "",
+        password: "",
         rememberMe: false,
         code: "",
         uuid: ""
@@ -141,7 +141,10 @@ export default {
             Cookies.remove('rememberMe');
           }
           this.$store.dispatch("Login", this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || "/" }).catch(()=>{});
+            // 解决登录后不跳转自定义首页
+            // this.$router.push({ path: this.redirect || "/" }).catch(()=>{});
+            this.$router.push({path: "home/index"}).catch(() => {
+            })
           }).catch(() => {
             this.loading = false;
             if (this.captchaEnabled) {

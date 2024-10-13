@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.InstitutionalInformationMapper">
+    
+    <resultMap type="InstitutionalInformation" id="InstitutionalInformationResult">
+        <result property="id"    column="id"    />
+        <result property="institutionName"    column="institution_name"    />
+        <result property="insitutionAbbreviation"    column="insitution_abbreviation"    />
+        <result property="contact"    column="contact"    />
+        <result property="contactNumber"    column="contact_number"    />
+        <result property="institutionType"    column="institution_type"    />
+        <result property="institutionScale"    column="institution_scale"    />
+        <result property="region"    column="region"    />
+        <result property="fullAddress"    column="full_address"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="dimension"    column="dimension"    />
+        <result property="remarksinFormation"    column="remarksin_formation"    />
+        <result property="businessLicenseNumber"    column="business_license_number"    />
+        <result property="licenseNumber"    column="license_number"    />
+        <result property="tradeName"    column="trade_name"    />
+        <result property="creationTime"    column="creation_time"    />
+    </resultMap>
+
+    <sql id="selectInstitutionalInformationVo">
+        select id, institution_name, insitution_abbreviation, contact, contact_number, institution_type, institution_scale, region, full_address, longitude, dimension, remarksin_formation, business_license_number, license_number, trade_name, creation_time from institutional_information
+    </sql>
+
+    <select id="selectInstitutionalInformationList" parameterType="InstitutionalInformation" resultMap="InstitutionalInformationResult">
+        <include refid="selectInstitutionalInformationVo"/>
+        <where>  
+            <if test="institutionName != null  and institutionName != ''"> and institution_name like concat('%', #{institutionName}, '%')</if>
+            <if test="insitutionAbbreviation != null  and insitutionAbbreviation != ''"> and insitution_abbreviation = #{insitutionAbbreviation}</if>
+            <if test="contact != null  and contact != ''"> and contact = #{contact}</if>
+            <if test="contactNumber != null  and contactNumber != ''"> and contact_number = #{contactNumber}</if>
+            <if test="institutionType != null  and institutionType != ''"> and institution_type = #{institutionType}</if>
+            <if test="institutionScale != null  and institutionScale != ''"> and institution_scale = #{institutionScale}</if>
+            <if test="region != null  and region != ''"> and region = #{region}</if>
+            <if test="fullAddress != null  and fullAddress != ''"> and full_address = #{fullAddress}</if>
+            <if test="longitude != null  and longitude != ''"> and longitude = #{longitude}</if>
+            <if test="dimension != null  and dimension != ''"> and dimension = #{dimension}</if>
+            <if test="remarksinFormation != null  and remarksinFormation != ''"> and remarksin_formation = #{remarksinFormation}</if>
+            <if test="businessLicenseNumber != null  and businessLicenseNumber != ''"> and business_license_number = #{businessLicenseNumber}</if>
+            <if test="licenseNumber != null  and licenseNumber != ''"> and license_number = #{licenseNumber}</if>
+            <if test="tradeName != null  and tradeName != ''"> and trade_name like concat('%', #{tradeName}, '%')</if>
+            <if test="creationTime != null "> and creation_time = #{creationTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectInstitutionalInformationById" parameterType="Long" resultMap="InstitutionalInformationResult">
+        <include refid="selectInstitutionalInformationVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertInstitutionalInformation" parameterType="InstitutionalInformation" useGeneratedKeys="true" keyProperty="id">
+        insert into institutional_information
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="institutionName != null">institution_name,</if>
+            <if test="insitutionAbbreviation != null">insitution_abbreviation,</if>
+            <if test="contact != null">contact,</if>
+            <if test="contactNumber != null">contact_number,</if>
+            <if test="institutionType != null">institution_type,</if>
+            <if test="institutionScale != null">institution_scale,</if>
+            <if test="region != null">region,</if>
+            <if test="fullAddress != null">full_address,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="dimension != null">dimension,</if>
+            <if test="remarksinFormation != null">remarksin_formation,</if>
+            <if test="businessLicenseNumber != null">business_license_number,</if>
+            <if test="licenseNumber != null">license_number,</if>
+            <if test="tradeName != null">trade_name,</if>
+            <if test="creationTime != null">creation_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="institutionName != null">#{institutionName},</if>
+            <if test="insitutionAbbreviation != null">#{insitutionAbbreviation},</if>
+            <if test="contact != null">#{contact},</if>
+            <if test="contactNumber != null">#{contactNumber},</if>
+            <if test="institutionType != null">#{institutionType},</if>
+            <if test="institutionScale != null">#{institutionScale},</if>
+            <if test="region != null">#{region},</if>
+            <if test="fullAddress != null">#{fullAddress},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="dimension != null">#{dimension},</if>
+            <if test="remarksinFormation != null">#{remarksinFormation},</if>
+            <if test="businessLicenseNumber != null">#{businessLicenseNumber},</if>
+            <if test="licenseNumber != null">#{licenseNumber},</if>
+            <if test="tradeName != null">#{tradeName},</if>
+            <if test="creationTime != null">#{creationTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInstitutionalInformation" parameterType="InstitutionalInformation">
+        update institutional_information
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="institutionName != null">institution_name = #{institutionName},</if>
+            <if test="insitutionAbbreviation != null">insitution_abbreviation = #{insitutionAbbreviation},</if>
+            <if test="contact != null">contact = #{contact},</if>
+            <if test="contactNumber != null">contact_number = #{contactNumber},</if>
+            <if test="institutionType != null">institution_type = #{institutionType},</if>
+            <if test="institutionScale != null">institution_scale = #{institutionScale},</if>
+            <if test="region != null">region = #{region},</if>
+            <if test="fullAddress != null">full_address = #{fullAddress},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="dimension != null">dimension = #{dimension},</if>
+            <if test="remarksinFormation != null">remarksin_formation = #{remarksinFormation},</if>
+            <if test="businessLicenseNumber != null">business_license_number = #{businessLicenseNumber},</if>
+            <if test="licenseNumber != null">license_number = #{licenseNumber},</if>
+            <if test="tradeName != null">trade_name = #{tradeName},</if>
+            <if test="creationTime != null">creation_time = #{creationTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteInstitutionalInformationById" parameterType="Long">
+        delete from institutional_information where id = #{id}
+    </delete>
+
+    <delete id="deleteInstitutionalInformationByIds" parameterType="String">
+        delete from institutional_information where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

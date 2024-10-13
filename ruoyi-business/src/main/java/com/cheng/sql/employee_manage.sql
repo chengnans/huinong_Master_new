@@ -1,0 +1,20 @@
+CREATE TABLE `employee_manage`(
+                                  `id` INT AUTO_INCREMENT COMMENT '序号' ,
+                                  `login_account` VARCHAR(255)   DEFAULT NULL COMMENT '登录账号' ,
+                                  `login_password` VARCHAR(255)   DEFAULT NULL COMMENT '登录密码' ,
+                                  `confirm_password` VARCHAR(255)   DEFAULT NULL COMMENT '确认密码' ,
+                                  `nickname` VARCHAR(255)   DEFAULT NULL COMMENT '昵称' ,
+                                  `affiliation` VARCHAR(255)   DEFAULT NULL COMMENT '所属机构' ,
+                                  `employee_name` VARCHAR(255)   DEFAULT NULL COMMENT '姓名' ,
+                                  `employee_sex` VARCHAR(255)   DEFAULT NULL COMMENT '性别' ,
+                                  `phone_number` VARCHAR(255)   DEFAULT NULL COMMENT '手机号码' ,
+                                  `employee_email` VARCHAR(255)   DEFAULT NULL COMMENT '邮箱' ,
+                                  `id_card` VARCHAR(255)   DEFAULT NULL COMMENT '身份证' ,
+                                  `apartment` VARCHAR(255)   DEFAULT NULL COMMENT '所在部门' ,
+                                  `employee_posts` VARCHAR(255)   DEFAULT NULL COMMENT '职位' ,
+                                  `regionallevel` VARCHAR(255)   DEFAULT NULL COMMENT '区域级别' ,
+                                  `region` VARCHAR(255)   DEFAULT NULL COMMENT '所属区域' ,
+                                  `remarksinformation` VARCHAR(255)   DEFAULT NULL COMMENT '备注信息' ,
+                                  `create_time` DATETIME   DEFAULT NULL COMMENT '创建时间' ,
+                                  PRIMARY KEY (id)
+)  COMMENT = '员工管理';

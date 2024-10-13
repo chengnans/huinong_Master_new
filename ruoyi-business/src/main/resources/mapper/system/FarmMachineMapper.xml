@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.FarmMachineMapper">
+    
+    <resultMap type="FarmMachine" id="FarmMachineResult">
+        <result property="id"    column="id"    />
+        <result property="stationName"    column="station_name"    />
+        <result property="contact"    column="contact"    />
+        <result property="phone"    column="phone"    />
+        <result property="stationAddr"    column="station_addr"    />
+        <result property="apartment"    column="apartment"    />
+        <result property="operator"    column="operator"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectFarmMachineVo">
+        select id, station_name, contact, phone, station_addr, apartment, operator, create_time from farm_machine
+    </sql>
+
+    <select id="selectFarmMachineList" parameterType="FarmMachine" resultMap="FarmMachineResult">
+        <include refid="selectFarmMachineVo"/>
+        <where>  
+            <if test="stationName != null  and stationName != ''"> and station_name like concat('%', #{stationName}, '%')</if>
+            <if test="contact != null  and contact != ''"> and contact = #{contact}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="stationAddr != null  and stationAddr != ''"> and station_addr = #{stationAddr}</if>
+            <if test="apartment != null  and apartment != ''"> and apartment = #{apartment}</if>
+            <if test="operator != null  and operator != ''"> and operator = #{operator}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectFarmMachineById" parameterType="Long" resultMap="FarmMachineResult">
+        <include refid="selectFarmMachineVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertFarmMachine" parameterType="FarmMachine" useGeneratedKeys="true" keyProperty="id">
+        insert into farm_machine
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stationName != null">station_name,</if>
+            <if test="contact != null">contact,</if>
+            <if test="phone != null">phone,</if>
+            <if test="stationAddr != null">station_addr,</if>
+            <if test="apartment != null">apartment,</if>
+            <if test="operator != null">operator,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stationName != null">#{stationName},</if>
+            <if test="contact != null">#{contact},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="stationAddr != null">#{stationAddr},</if>
+            <if test="apartment != null">#{apartment},</if>
+            <if test="operator != null">#{operator},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFarmMachine" parameterType="FarmMachine">
+        update farm_machine
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stationName != null">station_name = #{stationName},</if>
+            <if test="contact != null">contact = #{contact},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="stationAddr != null">station_addr = #{stationAddr},</if>
+            <if test="apartment != null">apartment = #{apartment},</if>
+            <if test="operator != null">operator = #{operator},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFarmMachineById" parameterType="Long">
+        delete from farm_machine where id = #{id}
+    </delete>
+
+    <delete id="deleteFarmMachineByIds" parameterType="String">
+        delete from farm_machine where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cheng.system.mapper.BaseAuthMapper">
+    
+    <resultMap type="BaseAuth" id="BaseAuthResult">
+        <result property="id"    column="id"    />
+        <result property="authCondition"    column="auth_condition"    />
+        <result property="authAi"    column="auth_ai"    />
+        <result property="authDepartment"    column="auth_department"    />
+        <result property="authTime"    column="auth_time"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectBaseAuthVo">
+        select id, auth_condition, auth_ai, auth_department, auth_time, create_time from base_auth
+    </sql>
+
+    <select id="selectBaseAuthList" parameterType="BaseAuth" resultMap="BaseAuthResult">
+        <include refid="selectBaseAuthVo"/>
+        <where>  
+            <if test="authCondition != null  and authCondition != ''"> and auth_condition = #{authCondition}</if>
+            <if test="authAi != null  and authAi != ''"> and auth_ai = #{authAi}</if>
+            <if test="authDepartment != null  and authDepartment != ''"> and auth_department = #{authDepartment}</if>
+            <if test="authTime != null "> and auth_time = #{authTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectBaseAuthById" parameterType="Long" resultMap="BaseAuthResult">
+        <include refid="selectBaseAuthVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBaseAuth" parameterType="BaseAuth" useGeneratedKeys="true" keyProperty="id">
+        insert into base_auth
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="authCondition != null">auth_condition,</if>
+            <if test="authAi != null">auth_ai,</if>
+            <if test="authDepartment != null">auth_department,</if>
+            <if test="authTime != null">auth_time,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="authCondition != null">#{authCondition},</if>
+            <if test="authAi != null">#{authAi},</if>
+            <if test="authDepartment != null">#{authDepartment},</if>
+            <if test="authTime != null">#{authTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBaseAuth" parameterType="BaseAuth">
+        update base_auth
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="authCondition != null">auth_condition = #{authCondition},</if>
+            <if test="authAi != null">auth_ai = #{authAi},</if>
+            <if test="authDepartment != null">auth_department = #{authDepartment},</if>
+            <if test="authTime != null">auth_time = #{authTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBaseAuthById" parameterType="Long">
+        delete from base_auth where id = #{id}
+    </delete>
+
+    <delete id="deleteBaseAuthByIds" parameterType="String">
+        delete from base_auth where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
