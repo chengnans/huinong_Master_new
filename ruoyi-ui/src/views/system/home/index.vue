@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 1460px;height: 750px;border: black ;position: absolute;top: 8px;left: 8px;font-size: 20px;overflow:auto;overflow-x: hidden;
+  <div style="width: 95vw;height: 90vh;border: black ;position: absolute;top: 8px;left: 8px;font-size: 20px;overflow:auto;overflow-x: hidden;
 " >
 
     <el-card :body-style="{ padding: '0px' }" style="position: absolute;top: 10px;left: 20px;width: 450px;height: 200px">

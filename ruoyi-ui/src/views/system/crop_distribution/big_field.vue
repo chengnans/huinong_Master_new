@@ -62,8 +62,8 @@ export default {
 };
 </script>
 <style scoped>
-#container {
-  width: 100%;
-  height: 750px;
-}
+  #container {
+    width: 90vw;
+    height: 90vh;
+  }
 </style>

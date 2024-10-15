@@ -8,6 +8,16 @@ export default {
   name: "map-view",
   mounted() {
     this.initAMap();
+      // 自适应
+      // var browerWidth = window.innerWidth; //浏览器可视宽度
+      // var baseWidth = 1920; //设计稿宽度
+      // var zoomValue = browerWidth / baseWidth; //缩放比例计算
+      // document.getElementById("container").style.transform = "scale(" + zoomValue + "," + zoomValue + ")"; //mainContainer为主容器id
+      // window.onresize = function () { //窗口尺寸变化时，重新计算和缩放
+      //   browerWidth = window.innerWidth;
+      //   zoomValue = browerWidth / baseWidth;
+      //   document.getElementById("container").style.transform = "scale(" + zoomValue + "," + zoomValue + ")";
+      // }
   },
   unmounted() {
     this.map?.destroy();
@@ -63,7 +73,7 @@ export default {
 </script>
 <style scoped>
 #container {
-  width: 100%;
-  height: 750px;
+  width: 90vw;
+  height: 90vh;
 }
 </style>
