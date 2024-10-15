@@ -75,23 +75,18 @@ export const constantRoutes = [
   //     }
   //   ]
   // },
-  // {
-  //   path: '',
-  //   component: Layout,
-  //   redirect: 'home/index',
-  //   children: [
-  //     {
-  //       path: 'home/index',
-  //       component: () => import('@/views/system/home/index'),
-  //       name: 'Index',
-  //       meta: { title: '首页', icon: 'dashboard', affix: true }
-  //     }
-  //   ]
-  // },
   {
     path: '',
     component: Layout,
-    redirect: 'home/index'
+    redirect: 'home/index',
+    children: [
+      {
+        path: 'home/index',
+        component: () => import('@/views/system/home/index'),
+        name: 'Index',
+        meta: { title: '首页', icon: 'dashboard', affix: true }
+      }
+    ]
   },
 
   {
